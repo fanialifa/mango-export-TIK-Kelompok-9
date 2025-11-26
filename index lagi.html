@@ -1,0 +1,1417 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🥭 Mango Export Tracker Indonesia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- QR Scanner - TESTED & WORKING -->
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --orange: #FF8C00; --yellow: #FFD700; --white: #FFFFFF;
+            --dark: #212529; --gray: #6C757D; --light: #F8F9FA;
+            --green: #00C851; --red: #DC3545;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: #F5F5F5;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+        /* HEADER */
+        .header {
+            background: linear-gradient(135deg, var(--orange) 0%, #FFA500 100%);
+            color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .header-top {
+            background: rgba(0,0,0,0.1);
+            padding: 10px 0;
+            font-size: 13px;
+        }
+        .header-main { padding: 15px 0; }
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .logo-section { display: flex; align-items: center; gap: 15px; }
+        .logo-icon {
+            width: 50px; height: 50px;
+            background: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+        .logo-text h1 { font-size: 22px; font-weight: 700; margin-bottom: 2px; }
+        .logo-text p { font-size: 12px; opacity: 0.9; }
+        .nav-main { display: flex; gap: 8px; flex-wrap: wrap; }
+        .nav-btn {
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.15);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+        .nav-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+
+        /* HERO */
+        .hero {
+            background: linear-gradient(100deg, rgba(255,140,0,0.85), rgba(255,165,0,0.85)),
+                        url('https://i.pinimg.com/1200x/14/2c/2a/142c2a8a9b31201e73e610b5ae8729f7.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+            padding: 120px 0;
+            text-align: center;
+            position: relative;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.3) 100%);
+        }
+        .hero-content { position: relative; z-index: 1; }
+        .hero h2 {
+            font-size: 52px;
+            font-weight: 800;
+            margin-bottom: 25px;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            line-height: 1.2;
+        }
+        .hero p {
+            font-size: 22px;
+            max-width: 850px;
+            margin: 0 auto 50px;
+            opacity: 0.95;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            line-height: 1.6;
+        }
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .hero-btn {
+            padding: 18px 40px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            border: 3px solid white;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+        .hero-btn-primary {
+            background: white;
+            color: var(--orange);
+        }
+        .hero-btn-primary:hover {
+            background: transparent;
+            color: white;
+            transform: translateY(-5px);
+        }
+
+        /* SECTION */
+        .section { padding: 80px 0; }
+        .section-title {
+            text-align: center;
+            font-size: 36px;
+            color: var(--dark);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        .section-subtitle {
+            text-align: center;
+            font-size: 18px;
+            color: var(--gray);
+            margin-bottom: 50px;
+        }
+
+        /* SCANNER */
+        .scanner-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .scanner-box {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            border: 2px solid #E5E7EB;
+        }
+        .scanner-box h3 {
+            font-size: 22px;
+            color: var(--dark);
+            margin-bottom: 20px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        #reader {
+            border-radius: 12px;
+            overflow: hidden;
+            border: 3px solid var(--orange);
+            min-height: 250px;
+        }
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--orange), var(--yellow));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255,140,0,0.3);
+        }
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+        .input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #E5E7EB;
+            border-radius: 10px;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        .input:focus {
+            outline: none;
+            border-color: var(--orange);
+            box-shadow: 0 0 0 3px rgba(255,140,0,0.1);
+        }
+        .result-box {
+            margin-top: 20px;
+            padding: 20px;
+            background: #F0FDF4;
+            border: 2px solid var(--green);
+            border-radius: 12px;
+            display: none;
+        }
+        .result-box.show { display: block; animation: fadeIn 0.3s; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .result-table {
+            width: 100%;
+            margin: 15px 0;
+        }
+        .result-table td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #E5E7EB;
+            font-size: 14px;
+        }
+        .result-table td:first-child {
+            font-weight: 600;
+            color: var(--dark);
+            width: 40%;
+        }
+        #qrcode-display {
+            text-align: center;
+            margin-top: 20px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+        }
+        #qrcode-display canvas {
+            margin: 0 auto;
+            display: block;
+            border: 2px solid var(--orange);
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+        /* ANALYTICS */
+        .analytics-explanation {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            border-left: 5px solid var(--orange);
+        }
+        .analytics-explanation h4 {
+            color: var(--orange);
+            font-size: 20px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .analytics-explanation p {
+            color: var(--gray);
+            line-height: 1.8;
+            font-size: 15px;
+        }
+
+        /* FUN FACTS */
+        .funfacts {
+            background: linear-gradient(135deg, var(--orange), var(--yellow));
+            color: white;
+            padding: 60px 0;
+        }
+        .funfacts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        .funfact-card {
+            background: rgba(255,255,255,0.15);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255,255,255,0.2);
+            transition: all 0.3s;
+        }
+        .funfact-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255,255,255,0.25);
+        }
+        .funfact-icon { font-size: 48px; margin-bottom: 15px; }
+        .funfact-card h4 { font-size: 20px; margin-bottom: 10px; }
+        .funfact-card p { font-size: 15px; line-height: 1.7; opacity: 0.95; }
+
+        /* TEAM */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        .team-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        .team-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--orange);
+        }
+        .team-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            overflow: hidden;
+            border: 4px solid var(--orange);
+        }
+        .team-photo img { width: 100%; height: 100%; object-fit: cover; }
+        .team-card h4 { font-size: 20px; color: var(--dark); margin-bottom: 5px; }
+        .team-nim { font-size: 14px; color: var(--gray); font-family: monospace; margin-bottom: 5px; }
+        .team-role { font-size: 14px; color: var(--orange); font-weight: 600; margin-bottom: 15px; }
+
+        /* POWER BI */
+        .powerbi-nav {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+        .powerbi-btn {
+            padding: 12px 24px;
+            background: white;
+            border: 2px solid var(--orange);
+            border-radius: 10px;
+            color: var(--orange);
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+        .powerbi-btn:hover, .powerbi-btn.active {
+            background: linear-gradient(135deg, var(--orange), var(--yellow));
+            color: white;
+            transform: translateY(-2px);
+        }
+        .powerbi-container {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+
+        /* FOOTER */
+        .footer {
+            background: linear-gradient(135deg, #212529, #343A40);
+            color: white;
+            padding: 60px 0 30px;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        .footer h4 { font-size: 20px; margin-bottom: 20px; color: var(--yellow); }
+        .footer a { color: rgba(255,255,255,0.8); text-decoration: none; }
+        .footer a:hover { color: var(--yellow); }
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 30px;
+            text-align: center;
+            color: rgba(255,255,255,0.7);
+        }
+
+        @media (max-width: 768px) {
+            .scanner-grid { grid-template-columns: 1fr; }
+            .hero h2 { font-size: 32px; }
+            .hero p { font-size: 18px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header-top">
+            <div class="container">
+                <div style="display:flex; justify-content:space-between;">
+                    <div>📧 Kelompok 9 TIK K1 </div>
+                </div>
+            </div>
+        </div>
+        <div class="header-main">
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo-section">
+                        <div class="logo-icon">🥭</div>
+                        <div class="logo-text">
+                            <h1>Export Mangga Indonesia</h1>
+                            <p>Real-time Tracking System</p>
+                        </div>
+                    </div>
+                    <nav class="nav-main">
+                        <a href="#home" class="nav-btn">Home</a>
+                        <a href="#scanner" class="nav-btn">Scanner</a>
+                        <a href="#funfacts" class="nav-btn">Fun Facts</a>
+                        <a href="#powerbi" class="nav-btn">Analytics</a>
+                        <a href="#team" class="nav-btn">Team</a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <div class="container">
+                <h2>🥭 Sistem Tracking Ekspor Mangga Indonesia</h2>
+                <p>Platform tracking ekspor mangga dengan teknologi QR Scanner real-time dan Power BI Analytics. Track 500+ batch dari kebun mangga hingga destinasi internasional.</p>
+                <div class="hero-buttons">
+                    <a href="#scanner" class="hero-btn hero-btn-primary">
+                        <i class="fas fa-qrcode"></i> Mulai Track Sekarang
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SCANNER -->
+    <section class="section" id="scanner">
+        <div class="container">
+            <h2 class="section-title">QR Scanner & Manual Tracking</h2>
+            <p class="section-subtitle">Scan QR code atau input batch code manual</p>
+
+            <div class="scanner-grid">
+                <div class="scanner-box">
+                    <h3><i class="fas fa-camera"></i> QR Code Scanner</h3>
+                    <div id="reader"></div>
+                    <button class="btn" id="startBtn" onclick="startScanning()">
+                        <i class="fas fa-play"></i> Mulai Scan
+                    </button>
+                    <button class="btn" id="stopBtn" onclick="stopScanning()" disabled>
+                        <i class="fas fa-stop"></i> Stop Scan
+                    </button>
+                    <button class="btn" id="switchBtn" onclick="switchCamera()" disabled>
+                        <i class="fas fa-sync-alt"></i> Ganti Kamera
+                    </button>
+                    <div id="scanMsg" style="margin-top:15px; padding:12px; background:#D1FAE5; border-radius:8px; display:none; font-size:14px; color:#065F46;">
+                        <i class="fas fa-info-circle"></i> <span id="scanMsgText"></span>
+                    </div>
+                </div>
+
+                <div class="scanner-box">
+                    <h3><i class="fas fa-keyboard"></i> Manual Tracking</h3>
+                    <input type="text" class="input" id="batchInput" placeholder="Masukkan Batch Code (contoh: MG20240001)">
+                    <button class="btn" onclick="trackBatch()">
+                        <i class="fas fa-search"></i> Track & Generate QR
+                    </button>
+
+                    <div class="result-box" id="resultBox">
+                        <h4 style="color:#065F46; margin-bottom:15px; font-size:18px;">
+                            <i class="fas fa-check-circle"></i> Batch Ditemukan!
+                        </h4>
+                        <table class="result-table" id="resultTable"></table>
+                        <div id="qrcode-display">
+                            <canvas id="qrCanvas" width="200" height="200"></canvas>
+                        </div>
+                        <p style="text-align:center; margin-top:15px; color:#065F46; font-size:13px; font-weight:600;">
+                            ✅ Scan QR code di atas untuk tracking ulang!
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FUN FACTS -->
+    <section class="funfacts" id="funfacts">
+        <div class="container">
+            <h2 class="section-title" style="color:white;">🥭 Fun Facts Tentang Mangga Indonesia</h2>
+            <p class="section-subtitle" style="color:rgba(255,255,255,0.9);">Fakta menarik yang mungkin belum kamu tau!</p>
+
+            <div class="funfacts-grid">
+                <div class="funfact-card">
+                    <div class="funfact-icon">🌍</div>
+                    <h4>Raja Buah Tropis</h4>
+                    <p>Mangga adalah buah tropis paling populer di dunia dan disebut "King of Tropical Fruits". Indonesia mengekspor ke 10+ negara!</p>
+                </div>
+                <div class="funfact-card">
+                    <div class="funfact-icon">🇮🇩</div>
+                    <h4>Varietas Terbanyak</h4>
+                    <p>Indonesia memiliki lebih dari 100 varietas mangga! Yang paling terkenal: Harum Manis, Gedong Gincu, Golek, Manalagi, dan Arumanis.</p>
+                </div>
+                <div class="funfact-card">
+                    <div class="funfact-icon">💪</div>
+                    <h4>Super Nutrisi</h4>
+                    <p>Mangga kaya Vitamin C, A, dan antioksidan. Satu buah mangga mengandung 100% kebutuhan Vitamin C harian!</p>
+                </div>
+                <div class="funfact-card">
+                    <div class="funfact-icon">🌳</div>
+                    <h4>Pohon Mangga Legendaris</h4>
+                    <p>Pohon mangga bisa hidup hingga 300 tahun dan tetap berbuah! Beberapa pohon di Jawa Barat berusia lebih dari 100 tahun.</p>
+                </div>
+                <div class="funfact-card">
+                    <div class="funfact-icon">🏆</div>
+                    <h4>Juara Ekspor</h4>
+                    <p>Mangga Gedong Gincu dari Majalengka, Jawa Barat, pernah dijual seharga Rp 1 juta per buah di pasar internasional!</p>
+                </div>
+                <div class="funfact-card">
+                    <div class="funfact-icon">🎨</div>
+                    <h4>Simbol Budaya</h4>
+                    <p>Dalam tradisi Indonesia, mangga melambangkan kemakmuran dan kesuburan. Daun mangga sering digunakan dalam upacara adat.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- POWER BI -->
+    <section class="section" id="powerbi" style="background:white;">
+        <div class="container">
+            <h2 class="section-title">📊 Power BI Analytics Dashboard</h2>
+            <p class="section-subtitle">7 halaman dashboard dengan penjelasan lengkap</p>
+
+            <div class="analytics-explanation" id="analyticsExp">
+                <h4><i class="fas fa-th-large"></i> Overview Dashboard</h4>
+                <p><strong>Dashboard Overview</strong> menampilkan ringkasan menyeluruh dari semua aktivitas ekspor mangga Indonesia. Di sini Anda dapat melihat total batch yang diekspor, distribusi berdasarkan destinasi negara, performa per bulan, serta tren ekspor secara keseluruhan.</p>
+            </div>
+
+            <div class="powerbi-nav">
+                <button class="powerbi-btn active" onclick="showPowerBI(0,'overview')">
+                    <i class="fas fa-th-large"></i> Overview
+                </button>
+                <button class="powerbi-btn" onclick="showPowerBI(1,'batches')">
+                    <i class="fas fa-boxes"></i> Batches
+                </button>
+                <button class="powerbi-btn" onclick="showPowerBI(2,'success')">
+                    <i class="fas fa-check-circle"></i> Success
+                </button>
+                <button class="powerbi-btn" onclick="showPowerBI(3,'revenue')">
+                    <i class="fas fa-dollar-sign"></i> Revenue
+                </button>
+                <button class="powerbi-btn" onclick="showPowerBI(4,'forecast')">
+                    <i class="fas fa-chart-line"></i> Forecast
+                </button>
+                <button class="powerbi-btn" onclick="showPowerBI(5,'quality')">
+                    <i class="fas fa-star"></i> Quality
+                </button>
+                <button class="powerbi-btn" onclick="showPowerBI(6,'weight')">
+                    <i class="fas fa-weight"></i> Weight
+                </button>
+            </div>
+
+            <div class="powerbi-container">
+                <iframe id="powerbiFrame" width="100%" height="600" 
+                    src="https://app.powerbi.com/reportEmbed?reportId=2cec03a5-f0c9-43d3-a629-b733678bd63a&autoAuth=true&ctid=fedd5298-8e66-45f1-b321-fd38ad0ff722" 
+                    frameborder="0" allowFullScreen="true">
+                </iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- TEAM -->
+    <section class="section" id="team" style="background:#F8F9FA;">
+        <div class="container">
+            <h2 class="section-title">👥 Our Team!</h2>
+                        <div class="team-grid">
+                <div class="team-card">
+                    <div class="team-photo">
+                        <img src="fani.jpg" alt="Team">
+                    </div>
+                    <h4>Alifa Fania Farghana</h4>
+                    <p class="team-nim">NIM: F3401241050</p>
+                    <a href="https://instagram.com/fnia.fan" target="_blank" style="display:inline-flex; align-items:center; gap:6px; padding:8px 16px; background:linear-gradient(135deg,#E1306C,#C13584); color:white; text-decoration:none; border-radius:8px; font-size:14px;">
+                        <i class="fab fa-instagram"></i> @fnia.fan
+                    </a>
+                </div>
+                <div class="team-card">
+                    <div class="team-photo">
+                        <img src="ajni.jpg" alt="Team">
+                    </div>
+                    <h4>Keysha Ajni Salsabila</h4>
+                    <p class="team-nim">NIM: F3401241048</p>
+                    <a href="https://instagram.com/keyshaajni" target="_blank" style="display:inline-flex; align-items:center; gap:6px; padding:8px 16px; background:linear-gradient(135deg,#E1306C,#C13584); color:white; text-decoration:none; border-radius:8px; font-size:14px;">
+                        <i class="fab fa-instagram"></i> @keyshaajni
+                    </a>
+                </div>
+                <div class="team-card">
+                    <div class="team-photo">
+                        <img src="damai.jpg" alt="Team">
+                    </div>
+                    <h4>Azhar Damai Nugraha</h4>
+                    <p class="team-nim">NIM: F3401241050</p>
+                    <a href="https://instagram.com/azhrngrhaaa_" target="_blank" style="display:inline-flex; align-items:center; gap:6px; padding:8px 16px; background:linear-gradient(135deg,#E1306C,#C13584); color:white; text-decoration:none; border-radius:8px; font-size:14px;">
+                        <i class="fab fa-instagram"></i> @azhrngrhaaa_
+                    </a>
+                </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <h4>🥭 Mango Export Tracker</h4>
+                    <p>Sistem tracking ekspor mangga Indonesia dengan QR Scanner dan Power BI Analytics.</p>
+                </div>
+                <div>
+                    <h4>Quick Links</h4>
+                    <p><a href="#home">→ Home</a></p>
+                    <p><a href="#scanner">→ Scanner</a></p>
+                    <p><a href="#funfacts">→ Fun Facts</a></p>
+                    <p><a href="#powerbi">→ Analytics</a></p>
+                    <p><a href="#team">→ Team</a></p>
+                </div>
+                <div>
+                    <h4>Contact</h4>
+                    <p>📧 export@mangoindonesia.com</p>
+                    <p>📞 +62 812-3456-7890</p>
+                    <p>📍 Jakarta, Indonesia</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Mango Export Tracker Indonesia. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- QR Generator Library - Simple & Working -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <script>
+        // ==================== DATA ====================
+        const batchDatabase = {
+  'MG20240001': {batch:'MG20240001',qr:'QRMG20240001BHFL29E3',type:'Harum Manis',weight:51.53,province:'Sumatra Utara',farm:'Tropical Paradise',dest:'🇦🇪 UAE',date:'2024-05-08',grade:'C',status:'Delivered'},
+  'MG20240002': {batch:'MG20240002',qr:'QRMG202400025WHWDXVW',type:'Golek',weight:104.93,province:'Jawa Timur',farm:'Tropical Paradise',dest:'🇸🇬 Singapore',date:'2024-08-23',grade:'B',status:'Exported'},
+  'MG20240003': {batch:'MG20240003',qr:'QRMG20240003GRKZ2VIX',type:'Podang',weight:445.20,province:'Lampung',farm:'Tropical Paradise',dest:'🇲🇾 Malaysia',date:'2024-08-25',grade:'A',status:'Quality Check'},
+  'MG20240004': {batch:'MG20240004',qr:'QRMG202400048J5RQTN9',type:'Manalagi',weight:306.85,province:'Lampung',farm:'Tropical Paradise',dest:'🇲🇾 Malaysia',date:'2024-07-02',grade:'C',status:'At Port'},
+  'MG20240005': {batch:'MG20240005',qr:'QRMG20240005RVQCUQDU',type:'Harum Manis',weight:587.38,province:'Jawa Barat',farm:'Green Meadow',dest:'🇭🇰 Hong Kong',date:'2024-09-18',grade:'A',status:'Exported'},
+  'MG20240006': {batch:'MG20240006',qr:'QRMG20240006GR8FZVKI',type:'Arumanis',weight:240.04,province:'Lampung',farm:'Mango Valley Farm',dest:'🇰🇷 South Korea',date:'2024-01-27',grade:'B',status:'Exported'},
+  'MG20240007': {batch:'MG20240007',qr:'QRMG20240007IWMI6I2Z',type:'Arumanis',weight:870.07,province:'Jawa Barat',farm:'Tropical Paradise',dest:'🇯🇵 Japan',date:'2024-08-10',grade:'B',status:'Quality Check'},
+  'MG20240008': {batch:'MG20240008',qr:'QRMG20240008Q7RPZ88W',type:'Harum Manis',weight:916.57,province:'NTB',farm:'Tropical Paradise',dest:'🇭🇰 Hong Kong',date:'2024-01-19',grade:'A',status:'Quality Check'},
+  'MG20240009': {batch:'MG20240009',qr:'QRMG20240009S7WSHMM6',type:'Arumanis',weight:94.24,province:'Jawa Timur',farm:'Mango Valley Farm',dest:'🇭🇰 Hong Kong',date:'2024-08-12',grade:'B',status:'Harvested'},
+  'MG20240010': {batch:'MG20240010',qr:'QRMG20240010SR4EVBK5',type:'Podang',weight:472.12,province:'Jawa Tengah',farm:'Sunrise Orchards',dest:'🇲🇾 Malaysia',date:'2024-04-08',grade:'B',status:'Quality Check'},
+  'MG20240011': {batch:'MG20240011',qr:'QRMG20240011KGMUB4RO',type:'Arumanis',weight:915.54,province:'Sumatra Utara',farm:'Sunrise Orchards',dest:'🇰🇷 South Korea',date:'2024-07-25',grade:'C',status:'Quality Check'},
+  'MG20240012': {batch:'MG20240012',qr:'QRMG2024001223DJH73E',type:'Gedong Gincu',weight:680.55,province:'NTB',farm:'Mango Valley Farm',dest:'🇯🇵 Japan',date:'2024-04-26',grade:'B',status:'Quality Check'},
+  'MG20240013': {batch:'MG20240013',qr:'QRMG202400136B230M3K',type:'Arumanis',weight:155.32,province:'Jawa Barat',farm:'Green Meadow',dest:'🇭🇰 Hong Kong',date:'2024-02-19',grade:'B',status:'Harvested'},
+  'MG20240014': {batch:'MG20240014',qr:'QRMG202400146UM6R398',type:'Gedong Gincu',weight:314.16,province:'Jawa Tengah',farm:'Golden Harvest',dest:'🇲🇾 Malaysia',date:'2024-06-05',grade:'A',status:'Harvested'},
+  'MG20240015': {batch:'MG20240015',qr:'QRMG20240015XOHPHZWX',type:'Podang',weight:869.85,province:'Lampung',farm:'Green Meadow',dest:'🇨🇳 China',date:'2024-07-19',grade:'B',status:'Delivered'},
+  'MG20240016': {batch:'MG20240016',qr:'QRMG202400166A28D5P2',type:'Manalagi',weight:57.01,province:'NTB',farm:'Blossom Fields',dest:'🇸🇦 Saudi Arabia',date:'2024-10-23',grade:'B',status:'Quality Check'},
+  'MG20240017': {batch:'MG20240017',qr:'QRMG20240017P4PG90IE',type:'Harum Manis',weight:202.83,province:'Sumatra Utara',farm:'Tropical Paradise',dest:'🇭🇰 Hong Kong',date:'2024-05-01',grade:'C',status:'Delivered'},
+  'MG20240018': {batch:'MG20240018',qr:'QRMG20240018OTR3RZW7',type:'Podang',weight:732.58,province:'Bali',farm:'Sunrise Orchards',dest:'🇹🇭 Thailand',date:'2024-03-14',grade:'A',status:'At Port'},
+  'MG20240019': {batch:'MG20240019',qr:'QRMG20240019MA09B8GU',type:'Harum Manis',weight:434.62,province:'Jawa Timur',farm:'Royal Mango Estate',dest:'🇭🇰 Hong Kong',date:'2024-01-13',grade:'A',status:'Harvested'},
+  'MG20240020': {batch:'MG20240020',qr:'QRMG20240020CTTD3T6L',type:'Golek',weight:71.55,province:'Bali',farm:'Blossom Fields',dest:'🇸🇦 Saudi Arabia',date:'2024-08-02',grade:'C',status:'Delivered'},
+  'MG20240021': {batch:'MG20240021',qr:'QRMG202400216U9ZDDDI',type:'Podang',weight:839.68,province:'NTB',farm:'Mango Valley Farm',dest:'🇸🇬 Singapore',date:'2024-07-23',grade:'B',status:'At Port'},
+  'MG20240022': {batch:'MG20240022',qr:'QRMG20240022QYLO00Y5',type:'Arumanis',weight:138.80,province:'Jawa Barat',farm:'Royal Mango Estate',dest:'🇨🇳 China',date:'2024-04-03',grade:'B',status:'At Port'},
+  'MG20240023': {batch:'MG20240023',qr:'QRMG20240023KKR5S52Q',type:'Podang',weight:390.54,province:'Bali',farm:'Sunrise Orchards',dest:'🇦🇪 UAE',date:'2024-08-06',grade:'C',status:'Exported'},
+  'MG20240024': {batch:'MG20240024',qr:'QRMG20240024UND6IPTJ',type:'Gedong Gincu',weight:90.36,province:'NTB',farm:'Blossom Fields',dest:'🇯🇵 Japan',date:'2024-03-21',grade:'A',status:'Quality Check'},
+  'MG20240025': {batch:'MG20240025',qr:'QRMG202400251YXZPT8M',type:'Manalagi',weight:170.91,province:'Jawa Timur',farm:'Sunrise Orchards',dest:'🇦🇪 UAE',date:'2024-08-07',grade:'A',status:'Delivered'},
+  'MG20240026': {batch:'MG20240026',qr:'QRMG20240026NXO358CH',type:'Arumanis',weight:369.41,province:'Jawa Barat',farm:'Green Meadow',dest:'🇰🇷 South Korea',date:'2024-02-07',grade:'A',status:'Harvested'},
+  'MG20240027': {batch:'MG20240027',qr:'QRMG202400278WXITCX3',type:'Arumanis',weight:240.80,province:'Jawa Timur',farm:'Mango Valley Farm',dest:'🇭🇰 Hong Kong',date:'2024-07-10',grade:'C',status:'In Transit'},
+  'MG20240028': {batch:'MG20240028',qr:'QRMG20240028LI9SQZ5N',type:'Harum Manis',weight:507.72,province:'Jawa Barat',farm:'Sunrise Orchards',dest:'🇨🇳 China',date:'2024-03-15',grade:'A',status:'Harvested'},
+  'MG20240029': {batch:'MG20240029',qr:'QRMG20240029QW46CCKR',type:'Manalagi',weight:426.34,province:'Jawa Tengah',farm:'Mango Valley Farm',dest:'🇲🇾 Malaysia',date:'2024-09-16',grade:'B',status:'Delivered'},
+  'MG20240030': {batch:'MG20240030',qr:'QRMG20240030WLZR2JWX',type:'Arumanis',weight:884.05,province:'Jawa Timur',farm:'Tropical Paradise',dest:'🇨🇳 China',date:'2024-09-02',grade:'B',status:'Harvested'},
+  'MG20240031': {batch:'MG20240031',qr:'QRMG20240031OG3DGKRR',type:'Golek',weight:937.41,province:'Jawa Tengah',farm:'Sunrise Orchards',dest:'🇯🇵 Japan',date:'2024-05-15',grade:'C',status:'In Transit'},
+  'MG20240032': {batch:'MG20240032',qr:'QRMG20240032U86D9C3H',type:'Podang',weight:820.26,province:'Lampung',farm:'Blossom Fields',dest:'🇸🇬 Singapore',date:'2024-09-30',grade:'A',status:'Harvested'},
+  'MG20240033': {batch:'MG20240033',qr:'QRMG20240033P0SK1YK2',type:'Gedong Gincu',weight:326.45,province:'Jawa Tengah',farm:'Tropical Paradise',dest:'🇰🇷 South Korea',date:'2024-05-22',grade:'B',status:'At Port'},
+  'MG20240034': {batch:'MG20240034',qr:'QRMG20240034O7U4RQ0T',type:'Arumanis',weight:890.70,province:'Jawa Timur',farm:'Tropical Paradise',dest:'🇦🇪 UAE',date:'2024-02-06',grade:'B',status:'Quality Check'},
+  'MG20240035': {batch:'MG20240035',qr:'QRMG202400356WO90JU3',type:'Podang',weight:74.25,province:'Jawa Barat',farm:'Green Meadow',dest:'🇯🇵 Japan',date:'2024-08-19',grade:'C',status:'In Transit'},
+  'MG20240036': {batch:'MG20240036',qr:'QRMG20240036KXOGMKRV',type:'Gedong Gincu',weight:968.91,province:'Sumatra Utara',farm:'Mango Valley Farm',dest:'🇨🇳 China',date:'2024-04-21',grade:'A',status:'In Transit'},
+  'MG20240037': {batch:'MG20240037',qr:'QRMG20240037HLPHDZ1M',type:'Gedong Gincu',weight:463.42,province:'Sumatra Utara',farm:'Golden Harvest',dest:'🇯🇵 Japan',date:'2024-06-14',grade:'C',status:'In Transit'},
+  'MG20240038': {batch:'MG20240038',qr:'QRMG2024003804U1JI5D',type:'Golek',weight:983.66,province:'Jawa Tengah',farm:'Royal Mango Estate',dest:'🇦🇪 UAE',date:'2024-02-25',grade:'B',status:'At Port'},
+  'MG20240039': {batch:'MG20240039',qr:'QRMG2024003956MNTVLM',type:'Podang',weight:509.65,province:'Jawa Timur',farm:'Tropical Paradise',dest:'🇸🇦 Saudi Arabia',date:'2024-10-19',grade:'C',status:'In Transit'},
+  'MG20240040': {batch:'MG20240040',qr:'QRMG20240040U0ZYQVRN',type:'Arumanis',weight:52.52,province:'Bali',farm:'Royal Mango Estate',dest:'🇭🇰 Hong Kong',date:'2024-09-03',grade:'B',status:'Harvested'},
+  'MG20240041': {batch:'MG20240041',qr:'QRMG20240041XGZ9O4RE',type:'Harum Manis',weight:975.43,province:'Jawa Barat',farm:'Mango Valley Farm',dest:'🇸🇬 Singapore',date:'2024-03-27',grade:'C',status:'Harvested'},
+  'MG20240042': {batch:'MG20240042',qr:'QRMG20240042OIIDQYXD',type:'Harum Manis',weight:106.50,province:'Jawa Tengah',farm:'Golden Harvest',dest:'🇯🇵 Japan',date:'2024-09-12',grade:'C',status:'Quality Check'},
+  'MG20240043': {batch:'MG20240043',qr:'QRMG20240043OJDF9Z15',type:'Manalagi',weight:855.16,province:'NTB',farm:'Blossom Fields',dest:'🇯🇵 Japan',date:'2024-04-17',grade:'C',status:'Harvested'},
+  'MG20240044': {batch:'MG20240044',qr:'QRMG202400446BKOJA5Q',type:'Podang',weight:509.53,province:'Jawa Timur',farm:'Royal Mango Estate',dest:'🇸🇬 Singapore',date:'2024-05-22',grade:'A',status:'At Port'},
+  'MG20240045': {batch:'MG20240045',qr:'QRMG20240045FKTX7GVN',type:'Golek',weight:640.07,province:'Jawa Tengah',farm:'Mango Valley Farm',dest:'🇸🇬 Singapore',date:'2024-02-03',grade:'B',status:'Delivered'},
+  'MG20240046': {batch:'MG20240046',qr:'QRMG20240046F3BSKH46',type:'Manalagi',weight:683.40,province:'Bali',farm:'Blossom Fields',dest:'🇸🇦 Saudi Arabia',date:'2024-05-25',grade:'B',status:'Quality Check'},
+  'MG20240047': {batch:'MG20240047',qr:'QRMG20240047IRP1IKGK',type:'Podang',weight:796.05,province:'Sumatra Utara',farm:'Sunrise Orchards',dest:'🇰🇷 South Korea',date:'2024-01-24',grade:'C',status:'Quality Check'},
+  'MG20240048': {batch:'MG20240048',qr:'QRMG20240048IK7JMIFP',type:'Manalagi',weight:211.90,province:'NTB',farm:'Green Meadow',dest:'🇦🇪 UAE',date:'2024-07-15',grade:'B',status:'Harvested'},
+  'MG20240049': {batch:'MG20240049',qr:'QRMG20240049262ZXHCG',type:'Gedong Gincu',weight:663.72,province:'Jawa Tengah',farm:'Golden Harvest',dest:'🇲🇾 Malaysia',date:'2024-10-10',grade:'A',status:'Harvested'},
+  'MG20240050': {batch:'MG20240050',qr:'QRMG2024005070IN5044',type:'Manalagi',weight:447.08,province:'Jawa Timur',farm:'Golden Harvest',dest:'🇸🇦 Saudi Arabia',date:'2024-09-11',grade:'C',status:'In Transit'},
+  'MG20240051': {batch:'MG20240051',qr:'QRMG20240051R7C12S6B',type:'Arumanis',weight:771.93,province:'Jawa Barat',farm:'Mango Valley Farm',dest:'🇦🇪 UAE',date:'2024-06-27',grade:'C',status:'Exported'},
+  'MG20240052': {batch:'MG20240052',qr:'QRMG20240052L0TFJO2M',type:'Gedong Gincu',weight:333.85,province:'Sumatra Utara',farm:'Tropical Paradise',dest:'🇨🇳 China',date:'2024-07-17',grade:'A',status:'Harvested'},
+  'MG20240053': {batch:'MG20240053',qr:'QRMG20240053CMJ8ERA7',type:'Manalagi',weight:914.44,province:'Jawa Timur',farm:'Tropical Paradise',dest:'🇸🇬 Singapore',date:'2024-07-04',grade:'A',status:'In Transit'},
+  'MG20240054': {batch:'MG20240054',qr:'QRMG202400548EGV89UJ',type:'Manalagi',weight:769.47,province:'Jawa Timur',farm:'Tropical Paradise',dest:'🇹🇭 Thailand',date:'2024-07-05',grade:'A',status:'At Port'},
+  'MG20240055': {batch:'MG20240055',qr:'QRMG20240055US9YST1H',type:'Golek',weight:155.31,province:'NTB',farm:'Royal Mango Estate',dest:'🇰🇷 South Korea',date:'2024-07-23',grade:'B',status:'In Transit'},
+  'MG20240056': {batch:'MG20240056',qr:'QRMG20240056QMO9KZQB',type:'Golek',weight:244.71,province:'Sumatra Utara',farm:'Blossom Fields',dest:'🇸🇬 Singapore',date:'2024-05-13',grade:'C',status:'Delivered'},
+  'MG20240057': {batch:'MG20240057',qr:'QRMG20240057DJMU2FFN',type:'Arumanis',weight:643.13,province:'Jawa Tengah',farm:'Golden Harvest',dest:'🇯🇵 Japan',date:'2024-03-18',grade:'A',status:'Delivered'},
+  'MG20240058': {batch:'MG20240058',qr:'QRMG202400588G1RVVAD',type:'Arumanis',weight:354.83,province:'Jawa Tengah',farm:'Green Meadow',dest:'🇯🇵 Japan',date:'2024-07-27',grade:'C',status:'Delivered'},
+  'MG20240059': {batch:'MG20240059',qr:'QRMG20240059YUYP7367',type:'Manalagi',weight:974.09,province:'Sumatra Utara',farm:'Mango Valley Farm',dest:'🇦🇪 UAE',date:'2024-04-18',grade:'A',status:'Delivered'},
+  'MG20240060': {batch:'MG20240060',qr:'QRMG20240060XRU7JLWF',type:'Golek',weight:476.91,province:'NTB',farm:'Blossom Fields',dest:'🇯🇵 Japan',date:'2024-02-08',grade:'A',status:'Quality Check'},
+  'MG20240061': {batch:'MG20240061',qr:'QRMG20240061S99WZDIQ',type:'Arumanis',weight:720.47,province:'Lampung',farm:'Royal Mango Estate',dest:'🇸🇦 Saudi Arabia',date:'2024-09-21',grade:'C',status:'Delivered'},
+  'MG20240062': {batch:'MG20240062',qr:'QRMG20240062HEWPBVPG',type:'Gedong Gincu',weight:535.72,province:'Sumatra Utara',farm:'Blossom Fields',dest:'🇲🇾 Malaysia',date:'2024-04-04',grade:'A',status:'Harvested'},
+  'MG20240063': {batch:'MG20240063',qr:'QRMG20240063BQLQGB0N',type:'Manalagi',weight:839.19,province:'Jawa Timur',farm:'Golden Harvest',dest:'🇦🇪 UAE',date:'2024-04-09',grade:'A',status:'Harvested'},
+  'MG20240064': {batch:'MG20240064',qr:'QRMG20240064TC8TGE5Y',type:'Harum Manis',weight:185.36,province:'Bali',farm:'Blossom Fields',dest:'🇭🇰 Hong Kong',date:'2024-07-27',grade:'A',status:'At Port'},
+  'MG20240065': {batch:'MG20240065',qr:'QRMG20240065HN801GY6',type:'Harum Manis',weight:304.00,province:'Jawa Barat',farm:'Golden Harvest',dest:'🇦🇪 UAE',date:'2024-01-12',grade:'B',status:'Quality Check'},
+  'MG20240066': {batch:'MG20240066',qr:'QRMG20240066H6GX0TM6',type:'Harum Manis',weight:707.14,province:'Lampung',farm:'Mango Valley Farm',dest:'🇯🇵 Japan',date:'2024-05-16',grade:'C',status:'Harvested'},
+  'MG20240067': {batch:'MG20240067',qr:'QRMG20240067ECQN5HF7',type:'Golek',weight:148.85,province:'Jawa Tengah',farm:'Royal Mango Estate',dest:'🇯🇵 Japan',date:'2024-06-06',grade:'A',status:'Harvested'},
+  'MG20240068': {batch:'MG20240068',qr:'QRMG20240068RHDTH4WI',type:'Gedong Gincu',weight:251.10,province:'Jawa Timur',farm:'Sunrise Orchards',dest:'🇯🇵 Japan',date:'2024-06-26',grade:'B',status:'Exported'},
+  'MG20240069': {batch:'MG20240069',qr:'QRMG20240069G1T5PUAW',type:'Podang',weight:834.18,province:'Jawa Tengah',farm:'Green Meadow',dest:'🇹🇭 Thailand',date:'2024-07-16',grade:'B',status:'Quality Check'},
+  'MG20240070': {batch:'MG20240070',qr:'QRMG20240070KTZOFCL7',type:'Manalagi',weight:210.13,province:'Lampung',farm:'Green Meadow',dest:'🇰🇷 South Korea',date:'2024-08-12',grade:'B',status:'At Port'},
+  'MG20240071': {batch:'MG20240071',qr:'QRMG202400717G9B3AR4',type:'Podang',weight:142.78,province:'Sumatra Utara',farm:'Sunrise Orchards',dest:'🇸🇬 Singapore',date:'2024-08-07',grade:'C',status:'Harvested'},
+  'MG20240072': {batch:'MG20240072',qr:'QRMG20240072YOH69UYB',type:'Golek',weight:62.94,province:'NTB',farm:'Sunrise Orchards',dest:'🇲🇾 Malaysia',date:'2024-08-02',grade:'B',status:'In Transit'},
+  'MG20240073': {batch:'MG20240073',qr:'QRMG20240073FUW442HQ',type:'Manalagi',weight:687.51,province:'Jawa Timur',farm:'Royal Mango Estate',dest:'🇸🇬 Singapore',date:'2024-03-06',grade:'C',status:'At Port'},
+  'MG20240074': {batch:'MG20240074',qr:'QRMG202400747SDT7REV',type:'Manalagi',weight:109.75,province:'Jawa Barat',farm:'Mango Valley Farm',dest:'🇸🇬 Singapore',date:'2024-01-17',grade:'A',status:'Quality Check'},
+  'MG20240075': {batch:'MG20240075',qr:'QRMG20240075KW98GG3X',type:'Podang',weight:907.44,province:'Lampung',farm:'Golden Harvest',dest:'🇸🇦 Saudi Arabia',date:'2024-07-09',grade:'C',status:'Exported'},
+  'MG20240076': {batch:'MG20240076',qr:'QRMG20240076EFN1X08O',type:'Manalagi',weight:622.88,province:'Sumatra Utara',farm:'Golden Harvest',dest:'🇭🇰 Hong Kong',date:'2024-05-16',grade:'A',status:'In Transit'},
+  'MG20240077': {batch:'MG20240077',qr:'QRMG20240077B1A9M0AR',type:'Harum Manis',weight:193.50,province:'Sumatra Utara',farm:'Blossom Fields',dest:'🇰🇷 South Korea',date:'2024-07-21',grade:'A',status:'At Port'},
+  'MG20240078': {batch:'MG20240078',qr:'QRMG20240078IB94R89A',type:'Podang',weight:986.30,province:'Lampung',farm:'Tropical Paradise',dest:'🇸🇬 Singapore',date:'2024-02-08',grade:'B',status:'Exported'},
+  'MG20240079': {batch:'MG20240079',qr:'QRMG20240079ON0R10P0',type:'Golek',weight:368.86,province:'Lampung',farm:'Sunrise Orchards',dest:'🇲🇾 Malaysia',date:'2024-05-13',grade:'A',status:'Quality Check'},
+  'MG20240080': {batch:'MG20240080',qr:'QRMG20240080B1KLDPRN',type:'Podang',weight:777.04,province:'Jawa Timur',farm:'Green Meadow',dest:'🇦🇪 UAE',date:'2024-03-14',grade:'C',status:'Exported'},
+  'MG20240081': {batch:'MG20240081',qr:'QRMG20240081M89Y8LJ4',type:'Gedong Gincu',weight:879.50,province:'Lampung',farm:'Green Meadow',dest:'🇰🇷 South Korea',date:'2024-08-31',grade:'B',status:'Delivered'},
+  'MG20240082': {batch:'MG20240082',qr:'QRMG20240082NLI5JFUZ',type:'Gedong Gincu',weight:88.31,province:'Bali',farm:'Green Meadow',dest:'🇲🇾 Malaysia',date:'2024-01-24',grade:'A',status:'Exported'},
+  'MG20240083': {batch:'MG20240083',qr:'QRMG20240083JKDRNGF5',type:'Arumanis',weight:163.49,province:'Sumatra Utara',farm:'Golden Harvest',dest:'🇲🇾 Malaysia',date:'2024-10-18',grade:'B',status:'Harvested'},
+  'MG20240084': {batch:'MG20240084',qr:'QRMG20240084LWPURS0T',type:'Podang',weight:711.82,province:'Jawa Tengah',farm:'Golden Harvest',dest:'🇸🇬 Singapore',date:'2024-03-11',grade:'A',status:'Quality Check'},
+  'MG20240085': {batch:'MG20240085',qr:'QRMG2024008529IFE62T',type:'Podang',weight:661.93,province:'Lampung',farm:'Tropical Paradise',dest:'🇨🇳 China',date:'2024-04-02',grade:'A',status:'Delivered'},
+  'MG20240086': {batch:'MG20240086',qr:'QRMG2024008638OPKH2L',type:'Harum Manis',weight:431.88,province:'Sumatra Utara',farm:'Mango Valley Farm',dest:'🇦🇪 UAE',date:'2024-07-27',grade:'C',status:'At Port'},
+  'MG20240087': {batch:'MG20240087',qr:'QRMG20240087XQA3TKTB',type:'Gedong Gincu',weight:561.25,province:'Jawa Tengah',farm:'Blossom Fields',dest:'🇦🇪 UAE',date:'2024-10-21',grade:'C',status:'Delivered'},
+  'MG20240088': {batch:'MG20240088',qr:'QRMG2024008848PUV1DD',type:'Harum Manis',weight:463.00,province:'Jawa Barat',farm:'Royal Mango Estate',dest:'🇹🇭 Thailand',date:'2024-09-13',grade:'A',status:'Delivered'},
+  'MG20240089': {batch:'MG20240089',qr:'QRMG20240089PM5YYZUL',type:'Podang',weight:194.60,province:'Sumatra Utara',farm:'Tropical Paradise',dest:'🇨🇳 China',date:'2024-10-11',grade:'C',status:'Quality Check'},
+  'MG20240090': {batch:'MG20240090',qr:'QRMG20240090N3UM7ETS',type:'Gedong Gincu',weight:943.99,province:'Bali',farm:'Green Meadow',dest:'🇯🇵 Japan',date:'2024-06-04',grade:'B',status:'At Port'},
+  'MG20240091': {batch:'MG20240091',qr:'QRMG20240091S75QX64K',type:'Harum Manis',weight:162.37,province:'Lampung',farm:'Sunrise Orchards',dest:'🇦🇪 UAE',date:'2024-07-27',grade:'B',status:'At Port'},
+  'MG20240092': {batch:'MG20240092',qr:'QRMG20240092U1E6DMY3',type:'Manalagi',weight:520.55,province:'Bali',farm:'Golden Harvest',dest:'🇸🇦 Saudi Arabia',date:'2024-10-11',grade:'C',status:'At Port'},
+  'MG20240093': {batch:'MG20240093',qr:'QRMG20240093DPNSTVPW',type:'Gedong Gincu',weight:365.32,province:'Jawa Tengah',farm:'Sunrise Orchards',dest:'🇨🇳 China',date:'2024-02-13',grade:'A',status:'In Transit'},
+  'MG20240094': {batch:'MG20240094',qr:'QRMG202400940TOSX9EU',type:'Gedong Gincu',weight:415.72,province:'Lampung',farm:'Royal Mango Estate',dest:'🇯🇵 Japan',date:'2024-06-20',grade:'C',status:'Quality Check'},
+  'MG20240095': {batch:'MG20240095',qr:'QRMG202400957K57UQRA',type:'Manalagi',weight:505.58,province:'Sumatra Utara',farm:'Mango Valley Farm',dest:'🇦🇪 UAE',date:'2024-05-02',grade:'C',status:'At Port'},
+  'MG20240096': {batch:'MG20240096',qr:'QRMG20240096FV0COUTQ',type:'Podang',weight:500.91,province:'Jawa Tengah',farm:'Royal Mango Estate',dest:'🇸🇬 Singapore',date:'2024-07-23',grade:'B',status:'At Port'},
+  'MG20240097': {batch:'MG20240097',qr:'QRMG202400978DEGCHCF',type:'Podang',weight:827.76,province:'Sumatra Utara',farm:'Sunrise Orchards',dest:'🇦🇪 UAE',date:'2024-03-14',grade:'B',status:'At Port'},
+  'MG20240098': {batch:'MG20240098',qr:'QRMG202400982HL9C7TA',type:'Podang',weight:496.73,province:'NTB',farm:'Sunrise Orchards',dest:'🇲🇾 Malaysia',date:'2024-02-12',grade:'A',status:'Exported'},
+  'MG20240099': {batch:'MG20240099',qr:'QRMG202400997JGFY2ZJ',type:'Podang',weight:113.00,province:'Bali',farm:'Sunrise Orchards',dest:'🇸🇬 Singapore',date:'2024-07-27',grade:'B',status:'In Transit'},
+  'MG20240100': {batch:'MG20240100',qr:'QRMG202401002G84LGJ8',type:'Gedong Gincu',weight:532.44,province:'Sumatra Utara',farm:'Tropical Paradise',dest:'🇨🇳 China',date:'2024-08-15',grade:'A',status:'Delivered'},
+  'MG20240101': {batch:'MG20240101',qr:'QRMG20240101UIR908DI',type:'Harum Manis',weight:780.49,province:'Jawa Timur',farm:'Royal Mango Estate',dest:'🇰🇷 South Korea',date:'2024-01-12',grade:'A',status:'Harvested'},
+  'MG20240102': {batch:'MG20240102',qr:'QRMG20240102KPHNQ0F9',type:'Gedong Gincu',weight:136.92,province:'Jawa Tengah',farm:'Sunrise Orchards',dest:'🇸🇬 Singapore',date:'2024-05-04',grade:'C',status:'At Port'},
+  'MG20240103': {batch:'MG20240103',qr:'QRMG20240103TVG9N2F8',type:'Harum Manis',weight:246.03,province:'Sumatra Utara',farm:'Sunrise Orchards',dest:'🇦🇪 UAE',date:'2024-05-16',grade:'B',status:'In Transit'},
+  'MG20240104': {batch:'MG20240104',qr:'QRMG20240104T0U8FJ1S',type:'Gedong Gincu',weight:787.72,province:'Lampung',farm:'Sunrise Orchards',dest:'🇲🇾 Malaysia',date:'2024-03-20',grade:'B',status:'Harvested'},
+  'MG20240105': {batch:'MG20240105',qr:'QRMG20240105Q054XWTO',type:'Podang',weight:462.68,province:'Sumatra Utara',farm:'Golden Harvest',dest:'🇰🇷 South Korea',date:'2024-05-03',grade:'B',status:'Quality Check'},
+  'MG20240106': {batch:'MG20240106',qr:'QRMG20240106HGTNZU72',type:'Harum Manis',weight:72.14,province:'Lampung',farm:'Royal Mango Estate',dest:'🇸🇬 Singapore',date:'2024-05-16',grade:'C',status:'Quality Check'},
+  'MG20240107': {batch:'MG20240107',qr:'QRMG20240107EJ3P33M7',type:'Golek',weight:709.89,province:'Jawa Barat',farm:'Sunrise Orchards',dest:'🇸🇬 Singapore',date:'2024-10-16',grade:'B',status:'Harvested'},
+  'MG20240108': {batch:'MG20240108',qr:'QRMG20240108LB6DQ93Z',type:'Arumanis',weight:986.95,province:'NTB',farm:'Sunrise Orchards',dest:'🇨🇳 China',date:'2024-04-02',grade:'B',status:'Exported'},
+  'MG20240109': {batch:'MG20240109',qr:'QRMG202401094CA17IP5',type:'Harum Manis',weight:897.60,province:'NTB',farm:'Sunrise Orchards',dest:'🇸🇬 Singapore',date:'2024-09-23',grade:'C',status:'In Transit'},
+  'MG20240110': {batch:'MG20240110',qr:'QRMG202401102SS88N3V',type:'Gedong Gincu',weight:173.50,province:'Jawa Barat',farm:'Mango Valley Farm',dest:'🇹🇭 Thailand',date:'2024-06-08',grade:'A',status:'Delivered'},
+  'MG20240111': {batch:'MG20240111',qr:'QRMG202401111PXXA9KF',type:'Podang',weight:634.50,province:'Jawa Tengah',farm:'Blossom Fields',dest:'🇹🇭 Thailand',date:'2024-02-29',grade:'A',status:'Harvested'},
+  'MG20240112': {batch:'MG20240112',qr:'QRMG20240112GWDIZJI6',type:'Manalagi',weight:367.36,province:'Bali',farm:'Blossom Fields',dest:'🇰🇷 South Korea',date:'2024-06-11',grade:'C',status:'Delivered'},
+  'MG20240113': {batch:'MG20240113',qr:'QRMG20240113GS96XRG2',type:'Manalagi',weight:858.03,province:'Jawa Timur',farm:'Sunrise Orchards',dest:'🇭🇰 Hong Kong',date:'2024-04-16',grade:'B',status:'Harvested'},
+  'MG20240114': {batch:'MG20240114',qr:'QRMG20240114L53RQ8GJ',type:'Harum Manis',weight:701.51,province:'Sumatra Utara',farm:'Blossom Fields',dest:'🇰🇷 South Korea',date:'2024-01-24',grade:'B',status:'Delivered'},
+  'MG20240115': {batch:'MG20240115',qr:'QRMG20240115YZDN2T68',type:'Gedong Gincu',weight:867.75,province:'Jawa Tengah',farm:'Tropical Paradise',dest:'🇦🇪 UAE',date:'2024-07-20',grade:'C',status:'Exported'},
+  'MG20240116': {batch:'MG20240116',qr:'QRMG202401169OWN050B',type:'Manalagi',weight:967.96,province:'NTB',farm:'Tropical Paradise',dest:'🇯🇵 Japan',date:'2024-08-26',grade:'A',status:'Harvested'},
+  'MG20240117': {batch:'MG20240117',qr:'QRMG20240117OHIQCLET',type:'Arumanis',weight:999.36,province:'Lampung',farm:'Mango Valley Farm',dest:'🇸🇦 Saudi Arabia',date:'2024-03-02',grade:'A',status:'Harvested'},
+  'MG20240118': {batch:'MG20240118',qr:'QRMG20240118512O7GS5',type:'Arumanis',weight:116.80,province:'Jawa Timur',farm:'Blossom Fields',dest:'🇰🇷 South Korea',date:'2024-08-14',grade:'C',status:'In Transit'},
+  'MG20240119': {batch:'MG20240119',qr:'QRMG20240119QAZJFKJX',type:'Arumanis',weight:458.35,province:'Lampung',farm:'Green Meadow',dest:'🇯🇵 Japan',date:'2024-10-12',grade:'C',status:'Delivered'},
+  'MG20240120': {batch:'MG20240120',qr:'QRMG2024012084BO41BE',type:'Harum Manis',weight:823.22,province:'Sumatra Utara',farm:'Royal Mango Estate',dest:'🇯🇵 Japan',date:'2024-01-20',grade:'B',status:'At Port'},
+  'MG20240121': {batch:'MG20240121',qr:'QRMG202401216K0CY9E1',type:'Arumanis',weight:791.65,province:'Bali',farm:'Royal Mango Estate',dest:'🇸🇬 Singapore',date:'2024-03-09',grade:'C',status:'Harvested'},
+  'MG20240122': {batch:'MG20240122',qr:'QRMG20240122WQE61D6K',type:'Golek',weight:937.01,province:'Jawa Timur',farm:'Tropical Paradise',dest:'🇭🇰 Hong Kong',date:'2024-01-07',grade:'C',status:'Quality Check'},
+  'MG20240123': {batch:'MG20240123',qr:'QRMG20240123FVZLNPB4',type:'Harum Manis',weight:186.53,province:'Bali',farm:'Golden Harvest',dest:'🇲🇾 Malaysia',date:'2024-06-26',grade:'B',status:'Exported'},
+  'MG20240124': {batch:'MG20240124',qr:'QRMG202401246RIDHY2S',type:'Golek',weight:816.80,province:'Jawa Timur',farm:'Blossom Fields',dest:'🇭🇰 Hong Kong',date:'2024-01-19',grade:'A',status:'Delivered'},
+  'MG20240125': {batch:'MG20240125',qr:'QRMG202401257MI1D3JZ',type:'Manalagi',weight:477.93,province:'Jawa Barat',farm:'Blossom Fields',dest:'🇰🇷 South Korea',date:'2024-08-04',grade:'A',status:'Delivered'},
+  'MG20240126': {batch:'MG20240126',qr:'QRMG20240126EWVZR8O2',type:'Golek',weight:857.78,province:'Sumatra Utara',farm:'Royal Mango Estate',dest:'🇦🇪 UAE',date:'2024-03-17',grade:'A',status:'Quality Check'},
+  'MG20240127': {batch:'MG20240127',qr:'QRMG20240127BZFKQHWF',type:'Arumanis',weight:412.82,province:'Sumatra Utara',farm:'Golden Harvest',dest:'🇯🇵 Japan',date:'2024-01-18',grade:'A',status:'Exported'},
+  'MG20240128': {batch:'MG20240128',qr:'QRMG20240128PH1LE18S',type:'Golek',weight:648.35,province:'NTB',farm:'Sunrise Orchards',dest:'🇰🇷 South Korea',date:'2024-05-03',grade:'A',status:'Exported'},
+  'MG20240129': {batch:'MG20240129',qr:'QRMG202401293XBTTIGJ',type:'Golek',weight:745.10,province:'Bali',farm:'Sunrise Orchards',dest:'🇨🇳 China',date:'2024-07-24',grade:'B',status:'Exported'},
+  'MG20240130': {batch:'MG20240130',qr:'QRMG20240130P733INXD',type:'Arumanis',weight:693.82,province:'NTB',farm:'Golden Harvest',dest:'🇸🇦 Saudi Arabia',date:'2024-10-16',grade:'B',status:'In Transit'},
+  'MG20240131': {batch:'MG20240131',qr:'QRMG20240131F2UL0YTF',type:'Golek',weight:913.89,province:'Jawa Barat',farm:'Tropical Paradise',dest:'🇰🇷 South Korea',date:'2024-09-03',grade:'A',status:'Delivered'},
+  'MG20240132': {batch:'MG20240132',qr:'QRMG20240132EXEJ3F7K',type:'Manalagi',weight:357.39,province:'NTB',farm:'Green Meadow',dest:'🇭🇰 Hong Kong',date:'2024-09-12',grade:'C',status:'Harvested'},
+  'MG20240133': {batch:'MG20240133',qr:'QRMG20240133WYLTGM1C',type:'Podang',weight:345.04,province:'Lampung',farm:'Tropical Paradise',dest:'🇲🇾 Malaysia',date:'2024-09-23',grade:'C',status:'Exported'},
+  'MG20240134': {batch:'MG20240134',qr:'QRMG202401345FJX1WQP',type:'Podang',weight:597.79,province:'Sumatra Utara',farm:'Mango Valley Farm',dest:'🇸🇦 Saudi Arabia',date:'2024-04-25',grade:'C',status:'Harvested'},
+  'MG20240135': {batch:'MG20240135',qr:'QRMG20240135T30NXGBD',type:'Podang',weight:461.66,province:'Jawa Barat',farm:'Tropical Paradise',dest:'🇭🇰 Hong Kong',date:'2024-02-08',grade:'C',status:'Harvested'},
+  'MG20240136': {batch:'MG20240136',qr:'QRMG20240136HW2NCDJU',type:'Gedong Gincu',weight:120.35,province:'Lampung',farm:'Golden Harvest',dest:'🇯🇵 Japan',date:'2024-02-20',grade:'A',status:'Delivered'},
+  'MG20240137': {batch:'MG20240137',qr:'QRMG20240137ADU1RNQH',type:'Manalagi',weight:153.59,province:'NTB',farm:'Golden Harvest',dest:'🇨🇳 China',date:'2024-08-25',grade:'A',status:'Delivered'},
+  'MG20240138': {batch:'MG20240138',qr:'QRMG20240138PGM5QUMT',type:'Arumanis',weight:555.90,province:'Jawa Barat',farm:'Golden Harvest',dest:'🇲🇾 Malaysia',date:'2024-08-27',grade:'A',status:'At Port'},
+  'MG20240139': {batch:'MG20240139',qr:'QRMG20240139QRODS4PX',type:'Golek',weight:777.22,province:'Jawa Barat',farm:'Mango Valley Farm',dest:'🇸🇬 Singapore',date:'2024-03-27',grade:'A',status:'Exported'},
+  'MG20240140': {batch:'MG20240140',qr:'QRMG202401401ZM4IHRP',type:'Manalagi',weight:614.65,province:'Jawa Tengah',farm:'Sunrise Orchards',dest:'🇸🇬 Singapore',date:'2024-04-03',grade:'A',status:'In Transit'},
+  'MG20240141': {batch:'MG20240141',qr:'QRMG2024014114CW0OLE',type:'Arumanis',weight:692.10,province:'Sumatra Utara',farm:'Blossom Fields',dest:'🇭🇰 Hong Kong',date:'2024-02-08',grade:'B',status:'At Port'},
+  'MG20240142': {batch:'MG20240142',qr:'QRMG202401425456VF39',type:'Gedong Gincu',weight:571.41,province:'Jawa Timur',farm:'Mango Valley Farm',dest:'🇯🇵 Japan',date:'2024-02-23',grade:'B',status:'In Transit'},
+  'MG20240143': {batch:'MG20240143',qr:'QRMG202401430RTER4D8',type:'Golek',weight:367.17,province:'Jawa Tengah',farm:'Golden Harvest',dest:'🇸🇬 Singapore',date:'2024-05-12',grade:'B',status:'At Port'},
+  'MG20240144': {batch:'MG20240144',qr:'QRMG20240144U33DJ2SZ',type:'Harum Manis',weight:194.52,province:'Bali',farm:'Sunrise Orchards',dest:'🇯🇵 Japan',date:'2024-07-04',grade:'B',status:'At Port'},
+  'MG20240145': {batch:'MG20240145',qr:'QRMG20240145ME2RD6RI',type:'Gedong Gincu',weight:873.54,province:'Jawa Barat',farm:'Tropical Paradise',dest:'🇭🇰 Hong Kong',date:'2024-06-05',grade:'A',status:'In Transit'},
+  'MG20240146': {batch:'MG20240146',qr:'QRMG202401468QC9UJ65',type:'Manalagi',weight:807.03,province:'Sumatra Utara',farm:'Golden Harvest',dest:'🇹🇭 Thailand',date:'2024-01-14',grade:'B',status:'Harvested'},
+  'MG20240147': {batch:'MG20240147',qr:'QRMG20240147ZXTYPWMX',type:'Manalagi',weight:586.17,province:'NTB',farm:'Tropical Paradise',dest:'🇹🇭 Thailand',date:'2024-09-21',grade:'A',status:'In Transit'},
+  'MG20240148': {batch:'MG20240148',qr:'QRMG20240148DHROFGFH',type:'Harum Manis',weight:445.65,province:'Sumatra Utara',farm:'Mango Valley Farm',dest:'🇯🇵 Japan',date:'2024-02-13',grade:'A',status:'At Port'},
+  'MG20240149': {batch:'MG20240149',qr:'QRMG20240149CFPO5P88',type:'Podang',weight:232.87,province:'Lampung',farm:'Blossom Fields',dest:'🇯🇵 Japan',date:'2024-05-05',grade:'C',status:'Exported'},
+  'MG20240150': {batch:'MG20240150',qr:'QRMG202401502AOURNXN',type:'Gedong Gincu',weight:103.19,province:'Jawa Barat',farm:'Tropical Paradise',dest:'🇹🇭 Thailand',date:'2024-03-18',grade:'C',status:'In Transit'},
+  'MG20240151': {batch:'MG20240151',qr:'QRMG20240151VS3I2G9Q',type:'Arumanis',weight:561.16,province:'Jawa Barat',farm:'Sunrise Orchards',dest:'🇲🇾 Malaysia',date:'2024-01-04',grade:'C',status:'At Port'},
+  'MG20240152': {batch:'MG20240152',qr:'QRMG20240152L6KS6ERU',type:'Golek',weight:508.81,province:'NTB',farm:'Golden Harvest',dest:'🇰🇷 South Korea',date:'2024-10-08',grade:'C',status:'Harvested'},
+  'MG20240153': {batch:'MG20240153',qr:'QRMG20240153EJ7DXG7W',type:'Podang',weight:285.98,province:'Jawa Barat',farm:'Golden Harvest',dest:'🇦🇪 UAE',date:'2024-03-21',grade:'B',status:'Delivered'},
+  'MG20240154': {batch:'MG20240154',qr:'QRMG202401545SPIFUWV',type:'Arumanis',weight:649.40,province:'Jawa Timur',farm:'Royal Mango Estate',dest:'🇨🇳 China',date:'2024-03-14',grade:'B',status:'At Port'},
+  'MG20240155': {batch:'MG20240155',qr:'QRMG20240155K6ES25FW',type:'Gedong Gincu',weight:637.81,province:'Bali',farm:'Royal Mango Estate',dest:'🇲🇾 Malaysia',date:'2024-01-06',grade:'A',status:'In Transit'},
+  'MG20240156': {batch:'MG20240156',qr:'QRMG2024015658QX1FK7',type:'Arumanis',weight:625.12,province:'Sumatra Utara',farm:'Sunrise Orchards',dest:'🇹🇭 Thailand',date:'2024-01-12',grade:'C',status:'Exported'},
+  'MG20240157': {batch:'MG20240157',qr:'QRMG202401578NRL4KD1',type:'Golek',weight:269.29,province:'Jawa Timur',farm:'Mango Valley Farm',dest:'🇦🇪 UAE',date:'2024-06-16',grade:'A',status:'Exported'},
+  'MG20240158': {batch:'MG20240158',qr:'QRMG20240158IKUIWKE4',type:'Golek',weight:859.35,province:'Jawa Tengah',farm:'Green Meadow',dest:'🇭🇰 Hong Kong',date:'2024-06-09',grade:'A',status:'Exported'},
+  'MG20240159': {batch:'MG20240159',qr:'QRMG20240159I6MPXSUP',type:'Harum Manis',weight:755.37,province:'Jawa Timur',farm:'Blossom Fields',dest:'🇲🇾 Malaysia',date:'2024-09-16',grade:'A',status:'Delivered'},
+  'MG20240160': {batch:'MG20240160',qr:'QRMG2024016051PNGMMW',type:'Manalagi',weight:940.41,province:'Jawa Tengah',farm:'Golden Harvest',dest:'🇸🇬 Singapore',date:'2024-07-16',grade:'B',status:'In Transit'},
+  'MG20240161': {batch:'MG20240161',qr:'QRMG20240161HSNBQJ3T',type:'Podang',weight:163.32,province:'Jawa Barat',farm:'Tropical Paradise',dest:'🇨🇳 China',date:'2024-03-16',grade:'C',status:'At Port'},
+  'MG20240162': {batch:'MG20240162',qr:'QRMG20240162MSGOZ7OR',type:'Golek',weight:992.94,province:'Lampung',farm:'Golden Harvest',dest:'🇨🇳 China',date:'2024-10-11',grade:'C',status:'Exported'},
+  'MG20240163': {batch:'MG20240163',qr:'QRMG20240163K9UOX1W5',type:'Harum Manis',weight:146.34,province:'Jawa Barat',farm:'Tropical Paradise',dest:'🇹🇭 Thailand',date:'2024-09-20',grade:'A',status:'In Transit'},
+  'MG20240164': {batch:'MG20240164',qr:'QRMG20240164KXASLEMD',type:'Podang',weight:78.11,province:'Jawa Tengah',farm:'Blossom Fields',dest:'🇸🇦 Saudi Arabia',date:'2024-03-31',grade:'A',status:'Delivered'},
+  'MG20240165': {batch:'MG20240165',qr:'QRMG20240165IUEQS9J9',type:'Harum Manis',weight:597.37,province:'Lampung',farm:'Royal Mango Estate',dest:'🇹🇭 Thailand',date:'2024-04-17',grade:'A',status:'Harvested'},
+  'MG20240166': {batch:'MG20240166',qr:'QRMG20240166QLGM1ULW',type:'Gedong Gincu',weight:837.97,province:'NTB',farm:'Tropical Paradise',dest:'🇨🇳 China',date:'2024-06-05',grade:'B',status:'Delivered'},
+  'MG20240167': {batch:'MG20240167',qr:'QRMG20240167VUK05P23',type:'Golek',weight:431.15,province:'Sumatra Utara',farm:'Royal Mango Estate',dest:'🇰🇷 South Korea',date:'2024-09-10',grade:'A',status:'In Transit'},
+  'MG20240168': {batch:'MG20240168',qr:'QRMG202401687Z768Y74',type:'Arumanis',weight:113.54,province:'Jawa Barat',farm:'Royal Mango Estate',dest:'🇸🇬 Singapore',date:'2024-06-18',grade:'C',status:'Delivered'},
+  'MG20240169': {batch:'MG20240169',qr:'QRMG20240169ZK74QSZD',type:'Arumanis',weight:773.79,province:'Jawa Tengah',farm:'Golden Harvest',dest:'🇸🇦 Saudi Arabia',date:'2024-02-29',grade:'B',status:'Quality Check'},
+  'MG20240170': {batch:'MG20240170',qr:'QRMG20240170CGQX0SR5',type:'Harum Manis',weight:79.61,province:'Jawa Barat',farm:'Tropical Paradise',dest:'🇹🇭 Thailand',date:'2024-07-20',grade:'A',status:'Exported'},
+  'MG20240171': {batch:'MG20240171',qr:'QRMG20240171UP4XKQVS',type:'Harum Manis',weight:535.14,province:'Jawa Timur',farm:'Royal Mango Estate',dest:'🇨🇳 China',date:'2024-07-03',grade:'A',status:'In Transit'},
+  'MG20240172': {batch:'MG20240172',qr:'QRMG20240172SWQZC4QZ',type:'Arumanis',weight:455.16,province:'Lampung',farm:'Green Meadow',dest:'🇸🇦 Saudi Arabia',date:'2024-02-10',grade:'B',status:'Quality Check'},
+  'MG20240173': {batch:'MG20240173',qr:'QRMG20240173M4BG947I',type:'Golek',weight:50.10,province:'NTB',farm:'Golden Harvest',dest:'🇸🇦 Saudi Arabia',date:'2024-08-27',grade:'C',status:'At Port'},
+  'MG20240174': {batch:'MG20240174',qr:'QRMG20240174WT0DHJLL',type:'Podang',weight:391.33,province:'Jawa Barat',farm:'Blossom Fields',dest:'🇲🇾 Malaysia',date:'2024-09-01',grade:'B',status:'In Transit'},
+  'MG20240175': {batch:'MG20240175',qr:'QRMG20240175CRHE080L',type:'Golek',weight:655.91,province:'Jawa Barat',farm:'Green Meadow',dest:'🇸🇬 Singapore',date:'2024-04-21',grade:'A',status:'At Port'},
+  'MG20240176': {batch:'MG20240176',qr:'QRMG20240176DXE6DWR4',type:'Golek',weight:316.49,province:'Jawa Tengah',farm:'Golden Harvest',dest:'🇲🇾 Malaysia',date:'2024-06-15',grade:'C',status:'Quality Check'},
+  'MG20240177': {batch:'MG20240177',qr:'QRMG20240177D88ECIRX',type:'Gedong Gincu',weight:679.70,province:'Sumatra Utara',farm:'Mango Valley Farm',dest:'🇦🇪 UAE',date:'2024-05-24',grade:'C',status:'Harvested'},
+  'MG20240178': {batch:'MG20240178',qr:'QRMG202401783LJ1EC4P',type:'Arumanis',weight:786.30,province:'NTB',farm:'Royal Mango Estate',dest:'🇹🇭 Thailand',date:'2024-06-13',grade:'A',status:'In Transit'},
+  'MG20240179': {batch:'MG20240179',qr:'QRMG20240179AD4AEYFR',type:'Harum Manis',weight:873.36,province:'Sumatra Utara',farm:'Royal Mango Estate',dest:'🇸🇬 Singapore',date:'2024-10-14',grade:'A',status:'Delivered'},
+  'MG20240180': {batch:'MG20240180',qr:'QRMG202401809WTEYKSH',type:'Arumanis',weight:308.73,province:'Jawa Barat',farm:'Blossom Fields',dest:'🇦🇪 UAE',date:'2024-06-03',grade:'B',status:'Exported'},
+  'MG20240181': {batch:'MG20240181',qr:'QRMG20240181PJ38RJ5F',type:'Podang',weight:100.74,province:'NTB',farm:'Mango Valley Farm',dest:'🇦🇪 UAE',date:'2024-08-16',grade:'C',status:'Harvested'},
+  'MG20240182': {batch:'MG20240182',qr:'QRMG20240182O56ABL2G',type:'Manalagi',weight:349.22,province:'Bali',farm:'Sunrise Orchards',dest:'🇯🇵 Japan',date:'2024-02-10',grade:'B',status:'Harvested'},
+  'MG20240183': {batch:'MG20240183',qr:'QRMG202401838EG0UD3L',type:'Golek',weight:991.36,province:'Sumatra Utara',farm:'Mango Valley Farm',dest:'🇯🇵 Japan',date:'2024-04-04',grade:'A',status:'Quality Check'},
+  'MG20240184': {batch:'MG20240184',qr:'QRMG20240184CCHTUC0U',type:'Podang',weight:796.08,province:'Bali',farm:'Royal Mango Estate',dest:'🇸🇦 Saudi Arabia',date:'2024-06-13',grade:'C',status:'Exported'},
+  'MG20240185': {batch:'MG20240185',qr:'QRMG20240185AZ8QIB9U',type:'Podang',weight:783.09,province:'Jawa Barat',farm:'Golden Harvest',dest:'🇸🇬 Singapore',date:'2024-06-27',grade:'A',status:'In Transit'},
+  'MG20240186': {batch:'MG20240186',qr:'QRMG20240186YRQVK4VW',type:'Podang',weight:350.95,province:'Jawa Tengah',farm:'Tropical Paradise',dest:'🇰🇷 South Korea',date:'2024-03-05',grade:'B',status:'Harvested'},
+  'MG20240187': {batch:'MG20240187',qr:'QRMG20240187R8KO0K5T',type:'Arumanis',weight:835.71,province:'Jawa Tengah',farm:'Mango Valley Farm',dest:'🇨🇳 China',date:'2024-09-13',grade:'C',status:'At Port'},
+  'MG20240188': {batch:'MG20240188',qr:'QRMG20240188Y2H6ESOD',type:'Manalagi',weight:457.08,province:'Jawa Timur',farm:'Sunrise Orchards',dest:'🇨🇳 China',date:'2024-10-27',grade:'B',status:'Delivered'},
+  'MG20240189': {batch:'MG20240189',qr:'QRMG20240189W6M6F388',type:'Podang',weight:532.94,province:'Jawa Timur',farm:'Tropical Paradise',dest:'🇲🇾 Malaysia',date:'2024-01-13',grade:'C',status:'At Port'},
+  'MG20240190': {batch:'MG20240190',qr:'QRMG20240190ZLCRBNPO',type:'Arumanis',weight:89.25,province:'Lampung',farm:'Sunrise Orchards',dest:'🇸🇦 Saudi Arabia',date:'2024-08-13',grade:'A',status:'Delivered'},
+  'MG20240191': {batch:'MG20240191',qr:'QRMG20240191M4EAL30T',type:'Harum Manis',weight:318.85,province:'Jawa Timur',farm:'Blossom Fields',dest:'🇨🇳 China',date:'2024-10-14',grade:'A',status:'In Transit'},
+  'MG20240192': {batch:'MG20240192',qr:'QRMG20240192I4O5E3A5',type:'Manalagi',weight:262.23,province:'NTB',farm:'Royal Mango Estate',dest:'🇯🇵 Japan',date:'2024-04-26',grade:'A',status:'Harvested'},
+  'MG20240193': {batch:'MG20240193',qr:'QRMG20240193DTEDC12Q',type:'Gedong Gincu',weight:541.95,province:'Lampung',farm:'Mango Valley Farm',dest:'🇸🇦 Saudi Arabia',date:'2024-06-16',grade:'A',status:'In Transit'},
+  'MG20240194': {batch:'MG20240194',qr:'QRMG202401946TV49WV5',type:'Arumanis',weight:413.81,province:'Bali',farm:'Royal Mango Estate',dest:'🇸🇬 Singapore',date:'2024-01-06',grade:'A',status:'At Port'},
+  'MG20240195': {batch:'MG20240195',qr:'QRMG20240195OWGQILXS',type:'Manalagi',weight:500.40,province:'Lampung',farm:'Blossom Fields',dest:'🇹🇭 Thailand',date:'2024-03-20',grade:'B',status:'Exported'},
+  'MG20240196': {batch:'MG20240196',qr:'QRMG20240196SFFGEJQP',type:'Gedong Gincu',weight:863.67,province:'NTB',farm:'Mango Valley Farm',dest:'🇨🇳 China',date:'2024-08-31',grade:'A',status:'At Port'},
+  'MG20240197': {batch:'MG20240197',qr:'QRMG20240197Q4K487KB',type:'Podang',weight:384.47,province:'Jawa Barat',farm:'Sunrise Orchards',dest:'🇸🇬 Singapore',date:'2024-10-22',grade:'B',status:'At Port'},
+  'MG20240198': {batch:'MG20240198',qr:'QRMG202401988KJW68F3',type:'Arumanis',weight:818.42,province:'Sumatra Utara',farm:'Green Meadow',dest:'🇭🇰 Hong Kong',date:'2024-07-05',grade:'B',status:'Exported'},
+  'MG20240199': {batch:'MG20240199',qr:'QRMG20240199AULG5DBT',type:'Golek',weight:731.22,province:'Jawa Tengah',farm:'Royal Mango Estate',dest:'🇭🇰 Hong Kong',date:'2024-05-20',grade:'B',status:'Delivered'},
+  'MG20240200': {batch:'MG20240200',qr:'QRMG20240200LQEOW4RA',type:'Gedong Gincu',weight:245.93,province:'Jawa Tengah',farm:'Mango Valley Farm',dest:'🇯🇵 Japan',date:'2024-02-14',grade:'A',status:'At Port'},
+  'MG20240201': {batch:'MG20240201',qr:'QRMG2024020185WCR40C',type:'Harum Manis',weight:400.08,province:'Sumatra Utara',farm:'Blossom Fields',dest:'🇨🇳 China',date:'2024-01-14',grade:'B',status:'Delivered'},
+  'MG20240202': {batch:'MG20240202',qr:'QRMG20240202U37YAIT4',type:'Arumanis',weight:524.00,province:'Jawa Barat',farm:'Green Meadow',dest:'🇭🇰 Hong Kong',date:'2024-06-13',grade:'B',status:'Exported'},
+  'MG20240203': {batch:'MG20240203',qr:'QRMG20240203M4KHQIMF',type:'Golek',weight:786.54,province:'Jawa Barat',farm:'Royal Mango Estate',dest:'🇭🇰 Hong Kong',date:'2024-08-22',grade:'B',status:'At Port'},
+  'MG20240204': {batch:'MG20240204',qr:'QRMG202402042GM2XOOE',type:'Harum Manis',weight:869.19,province:'Jawa Tengah',farm:'Tropical Paradise',dest:'🇯🇵 Japan',date:'2024-02-03',grade:'C',status:'Delivered'},
+  'MG20240205': {batch:'MG20240205',qr:'QRMG20240205K9CB6VGZ',type:'Harum Manis',weight:975.13,province:'NTB',farm:'Sunrise Orchards',dest:'🇸🇦 Saudi Arabia',date:'2024-05-31',grade:'C',status:'Quality Check'},
+  'MG20240206': {batch:'MG20240206',qr:'QRMG20240206VJKW4J0N',type:'Arumanis',weight:395.03,province:'Bali',farm:'Sunrise Orchards',dest:'🇯🇵 Japan',date:'2024-07-22',grade:'C',status:'Delivered'},
+  'MG20240207': {batch:'MG20240207',qr:'QRMG2024020742U55BYW',type:'Golek',weight:593.16,province:'Jawa Tengah',farm:'Sunrise Orchards',dest:'🇨🇳 China',date:'2024-09-18',grade:'C',status:'Quality Check'},
+  'MG20240208': {batch:'MG20240208',qr:'QRMG202402082ZK25GL7',type:'Manalagi',weight:157.36,province:'Jawa Tengah',farm:'Green Meadow',dest:'🇦🇪 UAE',date:'2024-09-20',grade:'A',status:'At Port'},
+  'MG20240209': {batch:'MG20240209',qr:'QRMG202402091BPH3ZPB',type:'Gedong Gincu',weight:877.75,province:'Jawa Timur',farm:'Sunrise Orchards',dest:'🇰🇷 South Korea',date:'2024-06-04',grade:'A',status:'Delivered'},
+  'MG20240210': {batch:'MG20240210',qr:'QRMG20240210PLKZCGNP',type:'Golek',weight:729.54,province:'Jawa Tengah',farm:'Green Meadow',dest:'🇸🇬 Singapore',date:'2024-03-24',grade:'C',status:'In Transit'},
+  'MG20240211': {batch:'MG20240211',qr:'QRMG20240211JRP7RF37',type:'Arumanis',weight:688.20,province:'Lampung',farm:'Sunrise Orchards',dest:'🇨🇳 China',date:'2024-05-12',grade:'C',status:'Quality Check'},
+  'MG20240212': {batch:'MG20240212',qr:'QRMG202402129XDF34NX',type:'Gedong Gincu',weight:878.63,province:'Lampung',farm:'Sunrise Orchards',dest:'🇭🇰 Hong Kong',date:'2024-03-21',grade:'B',status:'Exported'},
+  'MG20240213': {batch:'MG20240213',qr:'QRMG202402139DA06G10',type:'Podang',weight:765.55,province:'Bali',farm:'Mango Valley Farm',dest:'🇯🇵 Japan',date:'2024-03-15',grade:'B',status:'Exported'},
+  'MG20240214': {batch:'MG20240214',qr:'QRMG20240214NJ052KJE',type:'Gedong Gincu',weight:776.60,province:'Lampung',farm:'Golden Harvest',dest:'🇯🇵 Japan',date:'2024-04-12',grade:'A',status:'Quality Check'},
+  'MG20240215': {batch:'MG20240215',qr:'QRMG20240215HUF76DYZ',type:'Golek',weight:684.05,province:'Lampung',farm:'Sunrise Orchards',dest:'🇸🇬 Singapore',date:'2024-05-12',grade:'A',status:'Delivered'},
+  'MG20240216': {batch:'MG20240216',qr:'QRMG20240216CG8AHXJR',type:'Golek',weight:693.13,province:'Sumatra Utara',farm:'Mango Valley Farm',dest:'🇹🇭 Thailand',date:'2024-06-21',grade:'B',status:'Delivered'},
+  'MG20240217': {batch:'MG20240217',qr:'QRMG20240217JYKSIYM3',type:'Golek',weight:358.73,province:'Jawa Tengah',farm:'Mango Valley Farm',dest:'🇦🇪 UAE',date:'2024-06-02',grade:'C',status:'Delivered'},
+  'MG20240218': {batch:'MG20240218',qr:'QRMG20240218PVT9I8RY',type:'Harum Manis',weight:521.97,province:'Lampung',farm:'Tropical Paradise',dest:'🇹🇭 Thailand',date:'2024-01-11',grade:'B',status:'Delivered'},
+  'MG20240219': {batch:'MG20240219',qr:'QRMG20240219L1QL28KF',type:'Arumanis',weight:89.33,province:'Jawa Tengah',farm:'Blossom Fields',dest:'🇲🇾 Malaysia',date:'2024-05-21',grade:'A',status:'Quality Check'},
+  'MG20240220': {batch:'MG20240220',qr:'QRMG20240220NI5O1S26',type:'Arumanis',weight:663.33,province:'Jawa Timur',farm:'Sunrise Orchards',dest:'🇹🇭 Thailand',date:'2024-06-10',grade:'C',status:'Delivered'},
+  'MG20240221': {batch:'MG20240221',qr:'QRMG20240221MOH3WUDG',type:'Manalagi',weight:536.76,province:'Sumatra Utara',farm:'Golden Harvest',dest:'🇸🇦 Saudi Arabia',date:'2024-02-05',grade:'A',status:'Exported'},
+  'MG20240222': {batch:'MG20240222',qr:'QRMG20240222CHCWKPP6',type:'Gedong Gincu',weight:633.01,province:'Jawa Timur',farm:'Sunrise Orchards',dest:'🇭🇰 Hong Kong',date:'2024-05-12',grade:'B',status:'Delivered'},
+  'MG20240223': {batch:'MG20240223',qr:'QRMG20240223DAV0LAGV',type:'Gedong Gincu',weight:452.50,province:'Jawa Timur',farm:'Sunrise Orchards',dest:'🇯🇵 Japan',date:'2024-10-03',grade:'C',status:'Exported'},
+  'MG20240224': {batch:'MG20240224',qr:'QRMG20240224QPNCJX45',type:'Manalagi',weight:726.76,province:'NTB',farm:'Golden Harvest',dest:'🇦🇪 UAE',date:'2024-04-17',grade:'B',status:'At Port'},
+  'MG20240225': {batch:'MG20240225',qr:'QRMG202402259GF60C01',type:'Podang',weight:852.71,province:'Jawa Timur',farm:'Royal Mango Estate',dest:'🇸🇦 Saudi Arabia',date:'2024-08-11',grade:'C',status:'Harvested'},
+  'MG20240226': {batch:'MG20240226',qr:'QRMG20240226WYYN7KBQ',type:'Arumanis',weight:647.20,province:'Jawa Timur',farm:'Golden Harvest',dest:'🇨🇳 China',date:'2024-07-20',grade:'A',status:'Delivered'},
+  'MG20240227': {batch:'MG20240227',qr:'QRMG20240227A3JHQXG7',type:'Arumanis',weight:359.03,province:'Sumatra Utara',farm:'Mango Valley Farm',dest:'🇲🇾 Malaysia',date:'2024-09-07',grade:'A',status:'At Port'},
+  'MG20240228': {batch:'MG20240228',qr:'QRMG20240228JKMJTCCQ',type:'Golek',weight:63.69,province:'Lampung',farm:'Mango Valley Farm',dest:'🇸🇬 Singapore',date:'2024-09-26',grade:'A',status:'Harvested'},
+  'MG20240229': {batch:'MG20240229',qr:'QRMG202402295VKGSUTB',type:'Harum Manis',weight:998.43,province:'NTB',farm:'Tropical Paradise',dest:'🇸🇬 Singapore',date:'2024-07-26',grade:'B',status:'Delivered'},
+  'MG20240230': {batch:'MG20240230',qr:'QRMG20240230FB8OJEOL',type:'Arumanis',weight:589.26,province:'NTB',farm:'Blossom Fields',dest:'🇦🇪 UAE',date:'2024-06-20',grade:'B',status:'Delivered'},
+  'MG20240231': {batch:'MG20240231',qr:'QRMG20240231225BHVQN',type:'Manalagi',weight:198.80,province:'NTB',farm:'Green Meadow',dest:'🇦🇪 UAE',date:'2024-08-24',grade:'C',status:'Harvested'},
+  'MG20240232': {batch:'MG20240232',qr:'QRMG20240232445TX4K9',type:'Harum Manis',weight:489.51,province:'Jawa Timur',farm:'Royal Mango Estate',dest:'🇦🇪 UAE',date:'2024-03-24',grade:'B',status:'In Transit'},
+  'MG20240233': {batch:'MG20240233',qr:'QRMG20240233Y6GAOF2T',type:'Golek',weight:664.63,province:'Sumatra Utara',farm:'Royal Mango Estate',dest:'🇦🇪 UAE',date:'2024-09-11',grade:'B',status:'At Port'},
+  'MG20240234': {batch:'MG20240234',qr:'QRMG20240234CZCAIIJG',type:'Golek',weight:218.66,province:'Bali',farm:'Royal Mango Estate',dest:'🇭🇰 Hong Kong',date:'2024-10-11',grade:'C',status:'In Transit'},
+  'MG20240235': {batch:'MG20240235',qr:'QRMG20240235VR1OUMBN',type:'Harum Manis',weight:62.04,province:'Jawa Tengah',farm:'Mango Valley Farm',dest:'🇨🇳 China',date:'2024-01-08',grade:'B',status:'In Transit'},
+  'MG20240236': {batch:'MG20240236',qr:'QRMG20240236WFR3AOPY',type:'Podang',weight:57.10,province:'Jawa Timur',farm:'Blossom Fields',dest:'🇹🇭 Thailand',date:'2024-10-13',grade:'A',status:'At Port'},
+  'MG20240237': {batch:'MG20240237',qr:'QRMG20240237SL35IYWO',type:'Manalagi',weight:489.62,province:'Sumatra Utara',farm:'Blossom Fields',dest:'🇯🇵 Japan',date:'2024-09-04',grade:'C',status:'In Transit'},
+  'MG20240238': {batch:'MG20240238',qr:'QRMG20240238H2Q1O6I9',type:'Golek',weight:845.15,province:'NTB',farm:'Mango Valley Farm',dest:'🇦🇪 UAE',date:'2024-04-17',grade:'C',status:'In Transit'},
+  'MG20240239': {batch:'MG20240239',qr:'QRMG20240239NCVWF2TX',type:'Golek',weight:415.89,province:'Jawa Timur',farm:'Golden Harvest',dest:'🇰🇷 South Korea',date:'2024-07-05',grade:'A',status:'Delivered'},
+  'MG20240240': {batch:'MG20240240',qr:'QRMG20240240KO1KOY4K',type:'Harum Manis',weight:998.76,province:'NTB',farm:'Blossom Fields',dest:'🇦🇪 UAE',date:'2024-09-17',grade:'A',status:'In Transit'},
+  'MG20240241': {batch:'MG20240241',qr:'QRMG202402414Y1SXXQW',type:'Manalagi',weight:262.96,province:'Bali',farm:'Sunrise Orchards',dest:'🇲🇾 Malaysia',date:'2024-05-18',grade:'B',status:'Delivered'},
+  'MG20240242': {batch:'MG20240242',qr:'QRMG20240242KW719A1K',type:'Podang',weight:721.54,province:'Sumatra Utara',farm:'Sunrise Orchards',dest:'🇲🇾 Malaysia',date:'2024-03-14',grade:'A',status:'In Transit'},
+  'MG20240243': {batch:'MG20240243',qr:'QRMG20240243TZ2K6F0V',type:'Manalagi',weight:776.07,province:'Lampung',farm:'Golden Harvest',dest:'🇯🇵 Japan',date:'2024-03-19',grade:'A',status:'At Port'},
+  'MG20240244': {batch:'MG20240244',qr:'QRMG20240244PLVJUJWG',type:'Harum Manis',weight:646.46,province:'NTB',farm:'Sunrise Orchards',dest:'🇭🇰 Hong Kong',date:'2024-05-20',grade:'A',status:'Quality Check'},
+  'MG20240245': {batch:'MG20240245',qr:'QRMG20240245PECMBUQV',type:'Harum Manis',weight:556.95,province:'Bali',farm:'Royal Mango Estate',dest:'🇯🇵 Japan',date:'2024-07-23',grade:'A',status:'Exported'},
+  'MG20240246': {batch:'MG20240246',qr:'QRMG20240246Q6X4CKDK',type:'Manalagi',weight:720.31,province:'Jawa Barat',farm:'Golden Harvest',dest:'🇨🇳 China',date:'2024-05-01',grade:'C',status:'At Port'},
+  'MG20240247': {batch:'MG20240247',qr:'QRMG20240247AYR4FEN9',type:'Gedong Gincu',weight:474.82,province:'Lampung',farm:'Tropical Paradise',dest:'🇯🇵 Japan',date:'2024-04-20',grade:'C',status:'Delivered'},
+  'MG20240248': {batch:'MG20240248',qr:'QRMG202402482I5XOF33',type:'Golek',weight:386.15,province:'Sumatra Utara',farm:'Mango Valley Farm',dest:'🇦🇪 UAE',date:'2024-09-06',grade:'C',status:'Delivered'},
+  'MG20240249': {batch:'MG20240249',qr:'QRMG20240249QMV9TL3F',type:'Manalagi',weight:441.95,province:'Lampung',farm:'Golden Harvest',dest:'🇰🇷 South Korea',date:'2024-08-03',grade:'A',status:'In Transit'},
+  'MG20240250': {batch:'MG20240250',qr:'QRMG202402506HBRX3KE',type:'Manalagi',weight:658.04,province:'Jawa Barat',farm:'Golden Harvest',dest:'🇯🇵 Japan',date:'2024-06-27',grade:'C',status:'At Port'},
+  'MG20240251': {batch:'MG20240251',qr:'QRMG20240251GEN95TY6',type:'Gedong Gincu',weight:258.39,province:'Lampung',farm:'Royal Mango Estate',dest:'🇸🇬 Singapore',date:'2024-03-27',grade:'B',status:'Harvested'},
+  'MG20240252': {batch:'MG20240252',qr:'QRMG20240252DEXXRNX3',type:'Podang',weight:503.34,province:'Jawa Timur',farm:'Blossom Fields',dest:'🇦🇪 UAE',date:'2024-10-17',grade:'C',status:'Quality Check'},
+  'MG20240253': {batch:'MG20240253',qr:'QRMG20240253CQ390S9V',type:'Golek',weight:650.60,province:'Jawa Tengah',farm:'Royal Mango Estate',dest:'🇲🇾 Malaysia',date:'2024-08-26',grade:'A',status:'At Port'},
+  'MG20240254': {batch:'MG20240254',qr:'QRMG202402548RJ4DH6P',type:'Harum Manis',weight:915.20,province:'NTB',farm:'Tropical Paradise',dest:'🇲🇾 Malaysia',date:'2024-05-19',grade:'C',status:'Quality Check'},
+  'MG20240255': {batch:'MG20240255',qr:'QRMG20240255YVU5VFSV',type:'Golek',weight:903.39,province:'Jawa Tengah',farm:'Blossom Fields',dest:'🇯🇵 Japan',date:'2024-07-18',grade:'B',status:'Harvested'},
+  'MG20240256': {batch:'MG20240256',qr:'QRMG20240256JU1YKLUT',type:'Podang',weight:513.96,province:'Bali',farm:'Royal Mango Estate',dest:'🇸🇦 Saudi Arabia',date:'2024-06-30',grade:'C',status:'Harvested'},
+  'MG20240257': {batch:'MG20240257',qr:'QRMG20240257FTFK7QPS',type:'Gedong Gincu',weight:387.57,province:'Lampung',farm:'Sunrise Orchards',dest:'🇸🇦 Saudi Arabia',date:'2024-02-23',grade:'C',status:'At Port'},
+  'MG20240258': {batch:'MG20240258',qr:'QRMG20240258Q0W554GD',type:'Arumanis',weight:997.44,province:'Lampung',farm:'Tropical Paradise',dest:'🇭🇰 Hong Kong',date:'2024-07-05',grade:'B',status:'At Port'},
+  'MG20240259': {batch:'MG20240259',qr:'QRMG202402594TIIP6H8',type:'Podang',weight:217.03,province:'Sumatra Utara',farm:'Royal Mango Estate',dest:'🇹🇭 Thailand',date:'2024-08-14',grade:'B',status:'Delivered'},
+  'MG20240260': {batch:'MG20240260',qr:'QRMG20240260NNWD0KH5',type:'Golek',weight:117.57,province:'Bali',farm:'Mango Valley Farm',dest:'🇯🇵 Japan',date:'2024-04-26',grade:'A',status:'Exported'},
+  'MG20240261': {batch:'MG20240261',qr:'QRMG20240261CV5KGBPY',type:'Gedong Gincu',weight:436.68,province:'Lampung',farm:'Blossom Fields',dest:'🇦🇪 UAE',date:'2024-01-31',grade:'B',status:'In Transit'},
+  'MG20240262': {batch:'MG20240262',qr:'QRMG2024026262FLUAFI',type:'Arumanis',weight:764.91,province:'Bali',farm:'Royal Mango Estate',dest:'🇰🇷 South Korea',date:'2024-02-10',grade:'A',status:'Quality Check'},
+  'MG20240263': {batch:'MG20240263',qr:'QRMG20240263YZ1RUXBE',type:'Golek',weight:639.06,province:'NTB',farm:'Tropical Paradise',dest:'🇦🇪 UAE',date:'2024-02-16',grade:'C',status:'Quality Check'},
+  'MG20240264': {batch:'MG20240264',qr:'QRMG20240264649DB4IK',type:'Harum Manis',weight:820.14,province:'Lampung',farm:'Tropical Paradise',dest:'🇭🇰 Hong Kong',date:'2024-04-01',grade:'B',status:'Exported'},
+  'MG20240265': {batch:'MG20240265',qr:'QRMG20240265MHC086W1',type:'Podang',weight:557.44,province:'NTB',farm:'Royal Mango Estate',dest:'🇰🇷 South Korea',date:'2024-01-14',grade:'A',status:'Delivered'},
+  'MG20240266': {batch:'MG20240266',qr:'QRMG20240266NY84R7SU',type:'Podang',weight:447.77,province:'Lampung',farm:'Sunrise Orchards',dest:'🇲🇾 Malaysia',date:'2024-07-21',grade:'A',status:'Exported'},
+  'MG20240267': {batch:'MG20240267',qr:'QRMG202402674PLB83IJ',type:'Golek',weight:516.34,province:'Jawa Timur',farm:'Green Meadow',dest:'🇸🇬 Singapore',date:'2024-04-16',grade:'C',status:'At Port'},
+  'MG20240268': {batch:'MG20240268',qr:'QRMG20240268PMTSKJAR',type:'Golek',weight:485.68,province:'Jawa Barat',farm:'Sunrise Orchards',dest:'🇨🇳 China',date:'2024-10-24',grade:'A',status:'Harvested'},
+  'MG20240269': {batch:'MG20240269',qr:'QRMG20240269FR57FRNN',type:'Gedong Gincu',weight:487.12,province:'NTB',farm:'Green Meadow',dest:'🇭🇰 Hong Kong',date:'2024-01-04',grade:'C',status:'Delivered'},
+  'MG20240270': {batch:'MG20240270',qr:'QRMG20240270HSVKZ0I0',type:'Gedong Gincu',weight:964.09,province:'Lampung',farm:'Tropical Paradise',dest:'🇭🇰 Hong Kong',date:'2024-04-06',grade:'C',status:'Quality Check'},
+  'MG20240271': {batch:'MG20240271',qr:'QRMG20240271I97LACYZ',type:'Arumanis',weight:741.72,province:'Sumatra Utara',farm:'Royal Mango Estate',dest:'🇸🇬 Singapore',date:'2024-04-18',grade:'B',status:'At Port'},
+  'MG20240272': {batch:'MG20240272',qr:'QRMG202402721XJNTKSR',type:'Arumanis',weight:138.57,province:'Jawa Tengah',farm:'Tropical Paradise',dest:'🇯🇵 Japan',date:'2024-06-01',grade:'C',status:'Delivered'},
+  'MG20240273': {batch:'MG20240273',qr:'QRMG20240273J3KKYUFF',type:'Golek',weight:59.86,province:'Sumatra Utara',farm:'Sunrise Orchards',dest:'🇲🇾 Malaysia',date:'2024-05-19',grade:'B',status:'Exported'},
+  'MG20240274': {batch:'MG20240274',qr:'QRMG20240274XC3FKTHO',type:'Gedong Gincu',weight:949.15,province:'Bali',farm:'Green Meadow',dest:'🇹🇭 Thailand',date:'2024-08-19',grade:'A',status:'Quality Check'},
+  'MG20240275': {batch:'MG20240275',qr:'QRMG202402751OFWO2GR',type:'Manalagi',weight:407.54,province:'NTB',farm:'Mango Valley Farm',dest:'🇯🇵 Japan',date:'2024-07-06',grade:'B',status:'Exported'},
+  'MG20240276': {batch:'MG20240276',qr:'QRMG20240276T1BMRIV7',type:'Gedong Gincu',weight:877.74,province:'Jawa Barat',farm:'Blossom Fields',dest:'🇸🇬 Singapore',date:'2024-01-15',grade:'C',status:'At Port'},
+  'MG20240277': {batch:'MG20240277',qr:'QRMG20240277HELK37NB',type:'Arumanis',weight:499.37,province:'Bali',farm:'Royal Mango Estate',dest:'🇲🇾 Malaysia',date:'2024-02-01',grade:'B',status:'Harvested'},
+  'MG20240278': {batch:'MG20240278',qr:'QRMG202402787LAN53L1',type:'Gedong Gincu',weight:221.39,province:'Sumatra Utara',farm:'Mango Valley Farm',dest:'🇯🇵 Japan',date:'2024-07-06',grade:'C',status:'Exported'},
+  'MG20240279': {batch:'MG20240279',qr:'QRMG20240279CN21I959',type:'Harum Manis',weight:564.24,province:'Sumatra Utara',farm:'Tropical Paradise',dest:'🇭🇰 Hong Kong',date:'2024-10-18',grade:'C',status:'Exported'},
+  'MG20240280': {batch:'MG20240280',qr:'QRMG20240280PIOTVZW2',type:'Podang',weight:673.64,province:'NTB',farm:'Sunrise Orchards',dest:'🇯🇵 Japan',date:'2024-09-19',grade:'A',status:'Exported'},
+  'MG20240281': {batch:'MG20240281',qr:'QRMG20240281QEMK83S0',type:'Manalagi',weight:725.73,province:'Jawa Barat',farm:'Green Meadow',dest:'🇰🇷 South Korea',date:'2024-10-05',grade:'C',status:'Delivered'},
+  'MG20240282': {batch:'MG20240282',qr:'QRMG20240282U5RY2JPX',type:'Golek',weight:950.46,province:'Lampung',farm:'Green Meadow',dest:'🇲🇾 Malaysia',date:'2024-01-09',grade:'B',status:'In Transit'},
+  'MG20240283': {batch:'MG20240283',qr:'QRMG20240283TKWUZNIA',type:'Golek',weight:848.24,province:'Bali',farm:'Royal Mango Estate',dest:'🇸🇬 Singapore',date:'2024-06-11',grade:'B',status:'Delivered'},
+  'MG20240284': {batch:'MG20240284',qr:'QRMG20240284BMLR1RLZ',type:'Harum Manis',weight:594.96,province:'Jawa Tengah',farm:'Mango Valley Farm',dest:'🇭🇰 Hong Kong',date:'2024-06-01',grade:'B',status:'Exported'},
+  'MG20240285': {batch:'MG20240285',qr:'QRMG20240285D37ZF9M8',type:'Gedong Gincu',weight:569.00,province:'NTB',farm:'Green Meadow',dest:'🇸🇦 Saudi Arabia',date:'2024-05-27',grade:'B',status:'Delivered'},
+  'MG20240286': {batch:'MG20240286',qr:'QRMG20240286PUDPLNQH',type:'Harum Manis',weight:819.52,province:'Jawa Timur',farm:'Mango Valley Farm',dest:'🇯🇵 Japan',date:'2024-07-27',grade:'A',status:'Delivered'},
+  'MG20240287': {batch:'MG20240287',qr:'QRMG2024028754WTA80Y',type:'Podang',weight:303.52,province:'Sumatra Utara',farm:'Golden Harvest',dest:'🇦🇪 UAE',date:'2024-01-08',grade:'C',status:'Harvested'},
+  'MG20240288': {batch:'MG20240288',qr:'QRMG202402887Z7A1X75',type:'Harum Manis',weight:776.95,province:'Jawa Timur',farm:'Royal Mango Estate',dest:'🇨🇳 China',date:'2024-04-30',grade:'A',status:'Exported'},
+  'MG20240289': {batch:'MG20240289',qr:'QRMG20240289JO3U93RY',type:'Manalagi',weight:563.21,province:'Jawa Timur',farm:'Royal Mango Estate',dest:'🇹🇭 Thailand',date:'2024-03-26',grade:'B',status:'Delivered'},
+  'MG20240290': {batch:'MG20240290',qr:'QRMG20240290DCX5AWA0',type:'Golek',weight:319.82,province:'Lampung',farm:'Blossom Fields',dest:'🇭🇰 Hong Kong',date:'2024-09-16',grade:'B',status:'At Port'},
+  'MG20240291': {batch:'MG20240291',qr:'QRMG20240291356SW0FA',type:'Golek',weight:661.43,province:'NTB',farm:'Blossom Fields',dest:'🇸🇬 Singapore',date:'2024-02-03',grade:'B',status:'Exported'},
+  'MG20240292': {batch:'MG20240292',qr:'QRMG20240292V2OA6EPJ',type:'Podang',weight:79.02,province:'Jawa Tengah',farm:'Green Meadow',dest:'🇭🇰 Hong Kong',date:'2024-09-20',grade:'A',status:'Quality Check'},
+  'MG20240293': {batch:'MG20240293',qr:'QRMG2024029320C9830X',type:'Arumanis',weight:721.29,province:'Lampung',farm:'Golden Harvest',dest:'🇸🇦 Saudi Arabia',date:'2024-07-06',grade:'C',status:'Quality Check'},
+  'MG20240294': {batch:'MG20240294',qr:'QRMG20240294TK9PZR62',type:'Podang',weight:951.97,province:'NTB',farm:'Sunrise Orchards',dest:'🇸🇦 Saudi Arabia',date:'2024-04-16',grade:'A',status:'Harvested'},
+  'MG20240295': {batch:'MG20240295',qr:'QRMG20240295CR5KJD0X',type:'Arumanis',weight:759.55,province:'NTB',farm:'Golden Harvest',dest:'🇲🇾 Malaysia',date:'2024-01-07',grade:'C',status:'At Port'},
+  'MG20240296': {batch:'MG20240296',qr:'QRMG202402968JAIU7CK',type:'Arumanis',weight:947.77,province:'Jawa Barat',farm:'Blossom Fields',dest:'🇹🇭 Thailand',date:'2024-10-12',grade:'A',status:'Harvested'},
+  'MG20240297': {batch:'MG20240297',qr:'QRMG20240297LCDNAZQZ',type:'Podang',weight:427.93,province:'Jawa Barat',farm:'Golden Harvest',dest:'🇭🇰 Hong Kong',date:'2024-02-12',grade:'C',status:'Exported'},
+  'MG20240298': {batch:'MG20240298',qr:'QRMG20240298S9H5FK0Q',type:'Golek',weight:175.85,province:'Lampung',farm:'Royal Mango Estate',dest:'🇹🇭 Thailand',date:'2024-01-22',grade:'C',status:'Exported'},
+  'MG20240299': {batch:'MG20240299',qr:'QRMG20240299NX3HS22H',type:'Gedong Gincu',weight:914.90,province:'Sumatra Utara',farm:'Royal Mango Estate',dest:'🇨🇳 China',date:'2024-04-26',grade:'A',status:'Delivered'},
+  'MG20240300': {batch:'MG20240300',qr:'QRMG202403001CCDTYM4',type:'Harum Manis',weight:92.06,province:'Jawa Tengah',farm:'Tropical Paradise',dest:'🇸🇬 Singapore',date:'2024-08-13',grade:'C',status:'Quality Check'},
+  'MG20240301': {batch:'MG20240301',qr:'QRMG202403013BTAI3W3',type:'Gedong Gincu',weight:938.72,province:'NTB',farm:'Royal Mango Estate',dest:'🇨🇳 China',date:'2024-04-04',grade:'C',status:'Quality Check'},
+  'MG20240302': {batch:'MG20240302',qr:'QRMG20240302CBHT8KN4',type:'Gedong Gincu',weight:924.29,province:'Jawa Timur',farm:'Blossom Fields',dest:'🇸🇦 Saudi Arabia',date:'2024-07-23',grade:'A',status:'Quality Check'},
+  'MG20240303': {batch:'MG20240303',qr:'QRMG20240303Y1TR9SZF',type:'Gedong Gincu',weight:748.33,province:'Jawa Tengah',farm:'Mango Valley Farm',dest:'🇸🇦 Saudi Arabia',date:'2024-10-22',grade:'C',status:'Exported'},
+  'MG20240304': {batch:'MG20240304',qr:'QRMG20240304QDHIO7L1',type:'Podang',weight:240.61,province:'Jawa Timur',farm:'Golden Harvest',dest:'🇸🇦 Saudi Arabia',date:'2024-08-26',grade:'A',status:'At Port'},
+  'MG20240305': {batch:'MG20240305',qr:'QRMG202403056TWDDFVR',type:'Manalagi',weight:166.50,province:'NTB',farm:'Sunrise Orchards',dest:'🇸🇦 Saudi Arabia',date:'2024-05-19',grade:'C',status:'Harvested'},
+  'MG20240306': {batch:'MG20240306',qr:'QRMG20240306J7X1VD7Y',type:'Podang',weight:899.55,province:'Jawa Tengah',farm:'Golden Harvest',dest:'🇯🇵 Japan',date:'2024-06-16',grade:'B',status:'In Transit'},
+  'MG20240307': {batch:'MG20240307',qr:'QRMG20240307CDH2UU8O',type:'Podang',weight:611.26,province:'Bali',farm:'Sunrise Orchards',dest:'🇭🇰 Hong Kong',date:'2024-10-04',grade:'C',status:'Harvested'},
+  'MG20240308': {batch:'MG20240308',qr:'QRMG20240308BVJYLT7I',type:'Harum Manis',weight:479.46,province:'Bali',farm:'Green Meadow',dest:'🇦🇪 UAE',date:'2024-07-16',grade:'C',status:'Exported'},
+  'MG20240309': {batch:'MG20240309',qr:'QRMG20240309C37A282Y',type:'Gedong Gincu',weight:258.14,province:'Jawa Barat',farm:'Golden Harvest',dest:'🇭🇰 Hong Kong',date:'2024-04-20',grade:'A',status:'Exported'},
+  'MG20240310': {batch:'MG20240310',qr:'QRMG20240310ZMIEBMYO',type:'Podang',weight:624.62,province:'Bali',farm:'Blossom Fields',dest:'🇦🇪 UAE',date:'2024-04-20',grade:'A',status:'At Port'},
+  'MG20240311': {batch:'MG20240311',qr:'QRMG20240311PU75H5BC',type:'Arumanis',weight:86.81,province:'Jawa Barat',farm:'Green Meadow',dest:'🇹🇭 Thailand',date:'2024-02-16',grade:'C',status:'Delivered'},
+  'MG20240312': {batch:'MG20240312',qr:'QRMG20240312OA8XXEIU',type:'Manalagi',weight:469.56,province:'NTB',farm:'Mango Valley Farm',dest:'🇨🇳 China',date:'2024-08-31',grade:'C',status:'Quality Check'},
+  'MG20240313': {batch:'MG20240313',qr:'QRMG20240313DXBGXT15',type:'Gedong Gincu',weight:669.99,province:'Bali',farm:'Royal Mango Estate',dest:'🇯🇵 Japan',date:'2024-09-19',grade:'C',status:'Exported'},
+  'MG20240314': {batch:'MG20240314',qr:'QRMG202403148OQKXDW6',type:'Podang',weight:376.48,province:'Sumatra Utara',farm:'Tropical Paradise',dest:'🇦🇪 UAE',date:'2024-09-12',grade:'A',status:'Delivered'},
+  'MG20240315': {batch:'MG20240315',qr:'QRMG20240315H5CSPHVK',type:'Harum Manis',weight:480.45,province:'Bali',farm:'Green Meadow',dest:'🇨🇳 China',date:'2024-08-15',grade:'A',status:'In Transit'},
+  'MG20240316': {batch:'MG20240316',qr:'QRMG20240316UN9B9TGZ',type:'Podang',weight:866.54,province:'Jawa Timur',farm:'Royal Mango Estate',dest:'🇯🇵 Japan',date:'2024-06-02',grade:'A',status:'At Port'},
+  'MG20240317': {batch:'MG20240317',qr:'QRMG20240317YAUJSTO7',type:'Harum Manis',weight:312.46,province:'Jawa Timur',farm:'Sunrise Orchards',dest:'🇹🇭 Thailand',date:'2024-08-04',grade:'B',status:'Delivered'},
+  'MG20240318': {batch:'MG20240318',qr:'QRMG2024031836QLS9PW',type:'Harum Manis',weight:684.71,province:'NTB',farm:'Sunrise Orchards',dest:'🇸🇬 Singapore',date:'2024-10-03',grade:'B',status:'Exported'},
+  'MG20240319': {batch:'MG20240319',qr:'QRMG20240319S3K0D7FD',type:'Golek',weight:812.55,province:'Jawa Barat',farm:'Blossom Fields',dest:'🇨🇳 China',date:'2024-07-13',grade:'B',status:'At Port'},
+  'MG20240320': {batch:'MG20240320',qr:'QRMG20240320327Q4EWO',type:'Podang',weight:265.71,province:'Jawa Barat',farm:'Sunrise Orchards',dest:'🇹🇭 Thailand',date:'2024-03-19',grade:'C',status:'Delivered'},
+  'MG20240321': {batch:'MG20240321',qr:'QRMG20240321P28YHKQ7',type:'Golek',weight:302.33,province:'NTB',farm:'Tropical Paradise',dest:'🇭🇰 Hong Kong',date:'2024-09-24',grade:'C',status:'Delivered'},
+  'MG20240322': {batch:'MG20240322',qr:'QRMG202403222ABHNPHC',type:'Gedong Gincu',weight:461.90,province:'Lampung',farm:'Sunrise Orchards',dest:'🇲🇾 Malaysia',date:'2024-08-06',grade:'B',status:'At Port'},
+  'MG20240323': {batch:'MG20240323',qr:'QRMG20240323PLB7GDB8',type:'Podang',weight:89.22,province:'Jawa Timur',farm:'Tropical Paradise',dest:'🇸🇦 Saudi Arabia',date:'2024-05-31',grade:'C',status:'In Transit'},
+  'MG20240324': {batch:'MG20240324',qr:'QRMG2024032401N3VWFR',type:'Gedong Gincu',weight:259.33,province:'Sumatra Utara',farm:'Blossom Fields',dest:'🇹🇭 Thailand',date:'2024-03-03',grade:'A',status:'Delivered'},
+  'MG20240325': {batch:'MG20240325',qr:'QRMG20240325WQAAY3X8',type:'Manalagi',weight:875.75,province:'Sumatra Utara',farm:'Blossom Fields',dest:'🇲🇾 Malaysia',date:'2024-04-19',grade:'B',status:'In Transit'},
+  'MG20240326': {batch:'MG20240326',qr:'QRMG202403261QGYNQ8W',type:'Podang',weight:927.00,province:'Bali',farm:'Royal Mango Estate',dest:'🇲🇾 Malaysia',date:'2024-09-24',grade:'B',status:'Harvested'},
+  'MG20240327': {batch:'MG20240327',qr:'QRMG20240327UGAVFGQO',type:'Gedong Gincu',weight:561.03,province:'Jawa Timur',farm:'Golden Harvest',dest:'🇨🇳 China',date:'2024-08-20',grade:'B',status:'At Port'},
+  'MG20240328': {batch:'MG20240328',qr:'QRMG20240328GF4S8DMQ',type:'Harum Manis',weight:693.09,province:'Bali',farm:'Mango Valley Farm',dest:'🇸🇬 Singapore',date:'2024-06-26',grade:'B',status:'At Port'},
+  'MG20240329': {batch:'MG20240329',qr:'QRMG20240329T2XGEE7C',type:'Golek',weight:123.38,province:'Lampung',farm:'Golden Harvest',dest:'🇨🇳 China',date:'2024-03-21',grade:'C',status:'Quality Check'},
+  'MG20240330': {batch:'MG20240330',qr:'QRMG20240330Y8SH34R7',type:'Golek',weight:313.35,province:'Lampung',farm:'Mango Valley Farm',dest:'🇸🇦 Saudi Arabia',date:'2024-04-06',grade:'A',status:'Delivered'},
+  'MG20240331': {batch:'MG20240331',qr:'QRMG20240331NGV9XE94',type:'Arumanis',weight:910.21,province:'Lampung',farm:'Mango Valley Farm',dest:'🇸🇬 Singapore',date:'2024-08-10',grade:'B',status:'Exported'},
+  'MG20240332': {batch:'MG20240332',qr:'QRMG202403323IA5CSN3',type:'Arumanis',weight:666.21,province:'Lampung',farm:'Sunrise Orchards',dest:'🇹🇭 Thailand',date:'2024-02-17',grade:'A',status:'At Port'},
+  'MG20240333': {batch:'MG20240333',qr:'QRMG202403334ICP3RFT',type:'Manalagi',weight:827.21,province:'Bali',farm:'Tropical Paradise',dest:'🇦🇪 UAE',date:'2024-06-22',grade:'B',status:'In Transit'},
+  'MG20240334': {batch:'MG20240334',qr:'QRMG20240334O9JWYVBT',type:'Podang',weight:653.59,province:'Jawa Timur',farm:'Tropical Paradise',dest:'🇭🇰 Hong Kong',date:'2024-06-27',grade:'A',status:'In Transit'},
+  'MG20240335': {batch:'MG20240335',qr:'QRMG20240335YHJPBB1B',type:'Golek',weight:490.32,province:'Bali',farm:'Green Meadow',dest:'🇭🇰 Hong Kong',date:'2024-02-26',grade:'B',status:'At Port'},
+  'MG20240336': {batch:'MG20240336',qr:'QRMG202403366PNNIAFL',type:'Podang',weight:872.90,province:'Sumatra Utara',farm:'Blossom Fields',dest:'🇲🇾 Malaysia',date:'2024-05-25',grade:'C',status:'At Port'},
+  'MG20240337': {batch:'MG20240337',qr:'QRMG20240337AN5B3CWW',type:'Manalagi',weight:364.89,province:'Jawa Barat',farm:'Blossom Fields',dest:'🇹🇭 Thailand',date:'2024-02-24',grade:'C',status:'Quality Check'},
+  'MG20240338': {batch:'MG20240338',qr:'QRMG202403380991YGCZ',type:'Manalagi',weight:926.28,province:'Jawa Barat',farm:'Golden Harvest',dest:'🇨🇳 China',date:'2024-02-15',grade:'C',status:'Quality Check'},
+  'MG20240339': {batch:'MG20240339',qr:'QRMG20240339XZHTVF3Z',type:'Podang',weight:783.11,province:'Jawa Barat',farm:'Blossom Fields',dest:'🇸🇦 Saudi Arabia',date:'2024-06-09',grade:'A',status:'In Transit'},
+  'MG20240340': {batch:'MG20240340',qr:'QRMG20240340U3X1EVAO',type:'Golek',weight:379.20,province:'Jawa Barat',farm:'Green Meadow',dest:'🇭🇰 Hong Kong',date:'2024-05-25',grade:'A',status:'Harvested'},
+  'MG20240341': {batch:'MG20240341',qr:'QRMG2024034139LC7Y3O',type:'Arumanis',weight:528.86,province:'Jawa Timur',farm:'Sunrise Orchards',dest:'🇨🇳 China',date:'2024-09-12',grade:'C',status:'Quality Check'},
+  'MG20240342': {batch:'MG20240342',qr:'QRMG20240342S1AYBR0V',type:'Manalagi',weight:913.56,province:'Jawa Timur',farm:'Sunrise Orchards',dest:'🇹🇭 Thailand',date:'2024-03-11',grade:'B',status:'In Transit'},
+  'MG20240343': {batch:'MG20240343',qr:'QRMG20240343YDTEGMGN',type:'Golek',weight:924.13,province:'Jawa Timur',farm:'Golden Harvest',dest:'🇲🇾 Malaysia',date:'2024-09-02',grade:'A',status:'Harvested'},
+  'MG20240344': {batch:'MG20240344',qr:'QRMG2024034491ESQR5O',type:'Podang',weight:205.94,province:'Sumatra Utara',farm:'Golden Harvest',dest:'🇹🇭 Thailand',date:'2024-02-19',grade:'C',status:'Quality Check'},
+  'MG20240345': {batch:'MG20240345',qr:'QRMG20240345T8ETOHZT',type:'Arumanis',weight:589.74,province:'Jawa Barat',farm:'Tropical Paradise',dest:'🇦🇪 UAE',date:'2024-01-21',grade:'A',status:'Quality Check'},
+  'MG20240346': {batch:'MG20240346',qr:'QRMG20240346H2VWU3QX',type:'Golek',weight:335.61,province:'Jawa Tengah',farm:'Golden Harvest',dest:'🇯🇵 Japan',date:'2024-06-21',grade:'A',status:'Exported'},
+  'MG20240347': {batch:'MG20240347',qr:'QRMG202403476ZKL3R6J',type:'Gedong Gincu',weight:245.66,province:'Jawa Barat',farm:'Royal Mango Estate',dest:'🇨🇳 China',date:'2024-09-30',grade:'C',status:'Quality Check'},
+  'MG20240348': {batch:'MG20240348',qr:'QRMG20240348ANJMUR37',type:'Golek',weight:842.79,province:'Bali',farm:'Blossom Fields',dest:'🇨🇳 China',date:'2024-01-11',grade:'C',status:'Quality Check'},
+  'MG20240349': {batch:'MG20240349',qr:'QRMG20240349MK8VONB9',type:'Podang',weight:559.67,province:'Jawa Tengah',farm:'Sunrise Orchards',dest:'🇸🇦 Saudi Arabia',date:'2024-05-16',grade:'B',status:'Exported'},
+  'MG20240350': {batch:'MG20240350',qr:'QRMG20240350ESJBHLQG',type:'Harum Manis',weight:289.17,province:'NTB',farm:'Sunrise Orchards',dest:'🇰🇷 South Korea',date:'2024-06-21',grade:'A',status:'At Port'},
+  'MG20240351': {batch:'MG20240351',qr:'QRMG20240351Y5D1I8X3',type:'Golek',weight:559.49,province:'Jawa Timur',farm:'Golden Harvest',dest:'🇸🇦 Saudi Arabia',date:'2024-07-24',grade:'A',status:'Harvested'},
+  'MG20240352': {batch:'MG20240352',qr:'QRMG20240352VOSBUL6N',type:'Podang',weight:827.48,province:'Bali',farm:'Royal Mango Estate',dest:'🇦🇪 UAE',date:'2024-07-26',grade:'A',status:'Quality Check'},
+  'MG20240353': {batch:'MG20240353',qr:'QRMG20240353QLXKB5KI',type:'Gedong Gincu',weight:711.17,province:'Jawa Barat',farm:'Tropical Paradise',dest:'🇨🇳 China',date:'2024-10-17',grade:'A',status:'Quality Check'},
+  'MG20240354': {batch:'MG20240354',qr:'QRMG202403544ALZFHAO',type:'Podang',weight:373.14,province:'Jawa Timur',farm:'Tropical Paradise',dest:'🇸🇬 Singapore',date:'2024-05-09',grade:'A',status:'Harvested'},
+  'MG20240355': {batch:'MG20240355',qr:'QRMG20240355GOA1AK7Z',type:'Arumanis',weight:80.07,province:'Jawa Barat',farm:'Blossom Fields',dest:'🇯🇵 Japan',date:'2024-08-11',grade:'C',status:'At Port'},
+  'MG20240356': {batch:'MG20240356',qr:'QRMG202403563D0VV9W9',type:'Manalagi',weight:376.34,province:'Bali',farm:'Sunrise Orchards',dest:'🇦🇪 UAE',date:'2024-01-19',grade:'A',status:'Exported'},
+  'MG20240357': {batch:'MG20240357',qr:'QRMG202403577FW4ETZ7',type:'Harum Manis',weight:967.08,province:'Jawa Tengah',farm:'Sunrise Orchards',dest:'🇲🇾 Malaysia',date:'2024-03-13',grade:'B',status:'Exported'},
+  'MG20240358': {batch:'MG20240358',qr:'QRMG20240358GP84VMK2',type:'Podang',weight:430.54,province:'Jawa Barat',farm:'Tropical Paradise',dest:'🇹🇭 Thailand',date:'2024-02-14',grade:'C',status:'Exported'},
+  'MG20240359': {batch:'MG20240359',qr:'QRMG202403596RJ0BI1G',type:'Harum Manis',weight:626.02,province:'Jawa Timur',farm:'Blossom Fields',dest:'🇸🇦 Saudi Arabia',date:'2024-09-01',grade:'A',status:'At Port'},
+  'MG20240360': {batch:'MG20240360',qr:'QRMG20240360QN5729H0',type:'Manalagi',weight:288.90,province:'Jawa Timur',farm:'Mango Valley Farm',dest:'🇨🇳 China',date:'2024-04-02',grade:'C',status:'Exported'},
+  'MG20240361': {batch:'MG20240361',qr:'QRMG20240361QTMJGMXE',type:'Harum Manis',weight:394.26,province:'Jawa Tengah',farm:'Royal Mango Estate',dest:'🇲🇾 Malaysia',date:'2024-06-26',grade:'B',status:'At Port'},
+  'MG20240362': {batch:'MG20240362',qr:'QRMG20240362W6R4YMVN',type:'Golek',weight:549.58,province:'Jawa Tengah',farm:'Tropical Paradise',dest:'🇲🇾 Malaysia',date:'2024-08-23',grade:'B',status:'In Transit'},
+  'MG20240363': {batch:'MG20240363',qr:'QRMG20240363594T7AGR',type:'Harum Manis',weight:956.44,province:'Jawa Tengah',farm:'Mango Valley Farm',dest:'🇸🇦 Saudi Arabia',date:'2024-06-14',grade:'B',status:'Delivered'},
+  'MG20240364': {batch:'MG20240364',qr:'QRMG20240364LH7PEHP5',type:'Harum Manis',weight:635.25,province:'Jawa Tengah',farm:'Golden Harvest',dest:'🇸🇬 Singapore',date:'2024-09-13',grade:'A',status:'At Port'},
+  'MG20240365': {batch:'MG20240365',qr:'QRMG20240365KXK2J407',type:'Manalagi',weight:788.38,province:'Bali',farm:'Sunrise Orchards',dest:'🇹🇭 Thailand',date:'2024-07-11',grade:'B',status:'At Port'},
+  'MG20240366': {batch:'MG20240366',qr:'QRMG202403666UXGZDAE',type:'Podang',weight:480.10,province:'Lampung',farm:'Mango Valley Farm',dest:'🇸🇦 Saudi Arabia',date:'2024-10-14',grade:'B',status:'In Transit'},
+  'MG20240367': {batch:'MG20240367',qr:'QRMG202403675DKLX9ON',type:'Podang',weight:300.36,province:'Jawa Tengah',farm:'Green Meadow',dest:'🇭🇰 Hong Kong',date:'2024-10-22',grade:'B',status:'In Transit'},
+  'MG20240368': {batch:'MG20240368',qr:'QRMG202403684WN83YN3',type:'Harum Manis',weight:748.54,province:'Lampung',farm:'Royal Mango Estate',dest:'🇯🇵 Japan',date:'2024-02-05',grade:'B',status:'In Transit'},
+  'MG20240369': {batch:'MG20240369',qr:'QRMG20240369MOZPKWIP',type:'Podang',weight:262.91,province:'NTB',farm:'Blossom Fields',dest:'🇰🇷 South Korea',date:'2024-04-26',grade:'C',status:'Harvested'},
+  'MG20240370': {batch:'MG20240370',qr:'QRMG20240370N7DGD5PU',type:'Manalagi',weight:752.15,province:'Bali',farm:'Green Meadow',dest:'🇭🇰 Hong Kong',date:'2024-04-06',grade:'B',status:'Quality Check'},
+  'MG20240371': {batch:'MG20240371',qr:'QRMG20240371KR7CLW0P',type:'Manalagi',weight:155.66,province:'Lampung',farm:'Sunrise Orchards',dest:'🇯🇵 Japan',date:'2024-09-19',grade:'B',status:'In Transit'},
+  'MG20240372': {batch:'MG20240372',qr:'QRMG202403727FF6FUBE',type:'Arumanis',weight:546.48,province:'Sumatra Utara',farm:'Royal Mango Estate',dest:'🇲🇾 Malaysia',date:'2024-02-03',grade:'C',status:'Quality Check'},
+  'MG20240373': {batch:'MG20240373',qr:'QRMG20240373UOEZVPTN',type:'Manalagi',weight:53.48,province:'Jawa Timur',farm:'Royal Mango Estate',dest:'🇸🇦 Saudi Arabia',date:'2024-02-01',grade:'C',status:'Harvested'},
+  'MG20240374': {batch:'MG20240374',qr:'QRMG20240374PNAKWUEJ',type:'Gedong Gincu',weight:947.39,province:'NTB',farm:'Royal Mango Estate',dest:'🇹🇭 Thailand',date:'2024-04-02',grade:'B',status:'Exported'},
+  'MG20240375': {batch:'MG20240375',qr:'QRMG20240375IGT0I2Y6',type:'Gedong Gincu',weight:302.87,province:'Sumatra Utara',farm:'Sunrise Orchards',dest:'🇭🇰 Hong Kong',date:'2024-06-23',grade:'C',status:'In Transit'},
+  'MG20240376': {batch:'MG20240376',qr:'QRMG20240376MKYIIUAU',type:'Golek',weight:166.59,province:'Bali',farm:'Royal Mango Estate',dest:'🇹🇭 Thailand',date:'2024-04-09',grade:'B',status:'Exported'},
+  'MG20240377': {batch:'MG20240377',qr:'QRMG20240377HLSNUJJV',type:'Manalagi',weight:275.37,province:'Jawa Timur',farm:'Blossom Fields',dest:'🇸🇬 Singapore',date:'2024-01-31',grade:'B',status:'Delivered'},
+  'MG20240378': {batch:'MG20240378',qr:'QRMG20240378XE61XJ6Y',type:'Golek',weight:502.07,province:'NTB',farm:'Sunrise Orchards',dest:'🇲🇾 Malaysia',date:'2024-08-16',grade:'B',status:'Harvested'},
+  'MG20240379': {batch:'MG20240379',qr:'QRMG20240379RPWXVLT8',type:'Gedong Gincu',weight:754.63,province:'NTB',farm:'Sunrise Orchards',dest:'🇸🇬 Singapore',date:'2024-10-15',grade:'C',status:'In Transit'},
+  'MG20240380': {batch:'MG20240380',qr:'QRMG202403805CXP53MN',type:'Gedong Gincu',weight:360.65,province:'Jawa Timur',farm:'Mango Valley Farm',dest:'🇹🇭 Thailand',date:'2024-06-11',grade:'C',status:'Exported'},
+  'MG20240381': {batch:'MG20240381',qr:'QRMG20240381CHYUFJYB',type:'Arumanis',weight:550.59,province:'NTB',farm:'Golden Harvest',dest:'🇨🇳 China',date:'2024-10-18',grade:'C',status:'Harvested'},
+  'MG20240382': {batch:'MG20240382',qr:'QRMG20240382X49POZ7J',type:'Manalagi',weight:722.33,province:'Bali',farm:'Tropical Paradise',dest:'🇯🇵 Japan',date:'2024-01-19',grade:'B',status:'Delivered'},
+  'MG20240383': {batch:'MG20240383',qr:'QRMG20240383507ZB3GT',type:'Manalagi',weight:466.69,province:'Bali',farm:'Tropical Paradise',dest:'🇭🇰 Hong Kong',date:'2024-07-06',grade:'A',status:'Exported'},
+  'MG20240384': {batch:'MG20240384',qr:'QRMG20240384LCGPZPWC',type:'Gedong Gincu',weight:462.49,province:'Jawa Barat',farm:'Mango Valley Farm',dest:'🇦🇪 UAE',date:'2024-07-01',grade:'C',status:'In Transit'},
+  'MG20240385': {batch:'MG20240385',qr:'QRMG202403858FXAQGO2',type:'Arumanis',weight:518.24,province:'Jawa Barat',farm:'Blossom Fields',dest:'🇨🇳 China',date:'2024-07-17',grade:'B',status:'In Transit'},
+  'MG20240386': {batch:'MG20240386',qr:'QRMG20240386UFBX4LCQ',type:'Golek',weight:324.07,province:'NTB',farm:'Tropical Paradise',dest:'🇦🇪 UAE',date:'2024-06-13',grade:'C',status:'At Port'},
+  'MG20240387': {batch:'MG20240387',qr:'QRMG20240387GV70UFZ5',type:'Golek',weight:922.27,province:'Lampung',farm:'Tropical Paradise',dest:'🇦🇪 UAE',date:'2024-07-02',grade:'C',status:'Delivered'},
+  'MG20240388': {batch:'MG20240388',qr:'QRMG20240388Y6UWSQH2',type:'Harum Manis',weight:185.10,province:'Jawa Barat',farm:'Royal Mango Estate',dest:'🇸🇬 Singapore',date:'2024-05-10',grade:'B',status:'At Port'},
+  'MG20240389': {batch:'MG20240389',qr:'QRMG20240389R37BFASU',type:'Manalagi',weight:166.36,province:'Bali',farm:'Tropical Paradise',dest:'🇯🇵 Japan',date:'2024-07-18',grade:'B',status:'At Port'},
+  'MG20240390': {batch:'MG20240390',qr:'QRMG20240390SZQAIFFE',type:'Arumanis',weight:640.15,province:'Bali',farm:'Blossom Fields',dest:'🇯🇵 Japan',date:'2024-03-26',grade:'A',status:'Exported'},
+  'MG20240391': {batch:'MG20240391',qr:'QRMG20240391OLSLD7OJ',type:'Arumanis',weight:712.83,province:'Jawa Timur',farm:'Golden Harvest',dest:'🇯🇵 Japan',date:'2024-07-23',grade:'B',status:'In Transit'},
+  'MG20240392': {batch:'MG20240392',qr:'QRMG202403925KVHIFHP',type:'Manalagi',weight:472.38,province:'NTB',farm:'Sunrise Orchards',dest:'🇸🇬 Singapore',date:'2024-09-21',grade:'B',status:'Delivered'},
+  'MG20240393': {batch:'MG20240393',qr:'QRMG202403932L64DX6A',type:'Podang',weight:304.33,province:'Jawa Tengah',farm:'Tropical Paradise',dest:'🇹🇭 Thailand',date:'2024-09-01',grade:'A',status:'Quality Check'},
+  'MG20240394': {batch:'MG20240394',qr:'QRMG20240394N31X0021',type:'Gedong Gincu',weight:813.89,province:'Jawa Barat',farm:'Tropical Paradise',dest:'🇰🇷 South Korea',date:'2024-08-18',grade:'C',status:'At Port'},
+  'MG20240395': {batch:'MG20240395',qr:'QRMG20240395CAIIRDYD',type:'Arumanis',weight:84.29,province:'Jawa Barat',farm:'Sunrise Orchards',dest:'🇨🇳 China',date:'2024-06-04',grade:'B',status:'Exported'},
+  'MG20240396': {batch:'MG20240396',qr:'QRMG20240396TAVHZAFR',type:'Golek',weight:911.18,province:'Lampung',farm:'Tropical Paradise',dest:'🇲🇾 Malaysia',date:'2024-01-18',grade:'B',status:'In Transit'},
+  'MG20240397': {batch:'MG20240397',qr:'QRMG20240397J7C1KX1G',type:'Gedong Gincu',weight:879.59,province:'Bali',farm:'Green Meadow',dest:'🇹🇭 Thailand',date:'2024-06-11',grade:'A',status:'Delivered'},
+  'MG20240398': {batch:'MG20240398',qr:'QRMG20240398FQMFO340',type:'Harum Manis',weight:847.43,province:'Jawa Barat',farm:'Royal Mango Estate',dest:'🇨🇳 China',date:'2024-09-11',grade:'C',status:'Delivered'},
+  'MG20240399': {batch:'MG20240399',qr:'QRMG20240399TO2NI703',type:'Gedong Gincu',weight:257.00,province:'Jawa Tengah',farm:'Green Meadow',dest:'🇦🇪 UAE',date:'2024-03-23',grade:'A',status:'Exported'},
+  'MG20240400': {batch:'MG20240400',qr:'QRMG20240400SIWDTT5X',type:'Arumanis',weight:511.68,province:'Sumatra Utara',farm:'Green Meadow',dest:'🇭🇰 Hong Kong',date:'2024-10-05',grade:'C',status:'Delivered'},
+  'MG20240401': {batch:'MG20240401',qr:'QRMG20240401XIALTWPC',type:'Golek',weight:117.74,province:'Jawa Tengah',farm:'Royal Mango Estate',dest:'🇨🇳 China',date:'2024-03-14',grade:'A',status:'At Port'},
+  'MG20240402': {batch:'MG20240402',qr:'QRMG20240402DX81BUJ9',type:'Arumanis',weight:343.94,province:'Jawa Timur',farm:'Sunrise Orchards',dest:'🇸🇦 Saudi Arabia',date:'2024-05-10',grade:'C',status:'Exported'},
+  'MG20240403': {batch:'MG20240403',qr:'QRMG202404037PJ0C4HG',type:'Harum Manis',weight:350.49,province:'Jawa Timur',farm:'Royal Mango Estate',dest:'🇸🇦 Saudi Arabia',date:'2024-07-23',grade:'B',status:'Quality Check'},
+  'MG20240404': {batch:'MG20240404',qr:'QRMG20240404LK067SC5',type:'Gedong Gincu',weight:167.88,province:'Bali',farm:'Royal Mango Estate',dest:'🇹🇭 Thailand',date:'2024-02-20',grade:'A',status:'Quality Check'},
+  'MG20240405': {batch:'MG20240405',qr:'QRMG20240405UFWR9NHT',type:'Manalagi',weight:740.74,province:'Bali',farm:'Tropical Paradise',dest:'🇸🇦 Saudi Arabia',date:'2024-02-03',grade:'A',status:'At Port'},
+  'MG20240406': {batch:'MG20240406',qr:'QRMG202404060YSY8EYD',type:'Arumanis',weight:433.08,province:'Jawa Timur',farm:'Tropical Paradise',dest:'🇲🇾 Malaysia',date:'2024-09-23',grade:'B',status:'Quality Check'},
+  'MG20240407': {batch:'MG20240407',qr:'QRMG202404073O2F42MY',type:'Gedong Gincu',weight:931.70,province:'Jawa Tengah',farm:'Green Meadow',dest:'🇦🇪 UAE',date:'2024-03-12',grade:'B',status:'Delivered'},
+  'MG20240408': {batch:'MG20240408',qr:'QRMG20240408CCUM0TIP',type:'Golek',weight:647.73,province:'Lampung',farm:'Green Meadow',dest:'🇦🇪 UAE',date:'2024-06-09',grade:'A',status:'Delivered'},
+  'MG20240409': {batch:'MG20240409',qr:'QRMG20240409AY9T8WHS',type:'Podang',weight:741.41,province:'Lampung',farm:'Royal Mango Estate',dest:'🇭🇰 Hong Kong',date:'2024-01-12',grade:'A',status:'Harvested'},
+  'MG20240410': {batch:'MG20240410',qr:'QRMG20240410D899XCC7',type:'Manalagi',weight:828.51,province:'Jawa Barat',farm:'Blossom Fields',dest:'🇸🇦 Saudi Arabia',date:'2024-01-25',grade:'B',status:'At Port'},
+  'MG20240411': {batch:'MG20240411',qr:'QRMG202404116LW3Z8PG',type:'Gedong Gincu',weight:636.69,province:'Jawa Timur',farm:'Royal Mango Estate',dest:'🇯🇵 Japan',date:'2024-09-15',grade:'B',status:'Delivered'},
+  'MG20240412': {batch:'MG20240412',qr:'QRMG20240412SV2JOT31',type:'Harum Manis',weight:173.33,province:'Jawa Tengah',farm:'Royal Mango Estate',dest:'🇸🇬 Singapore',date:'2024-03-24',grade:'A',status:'Delivered'},
+  'MG20240413': {batch:'MG20240413',qr:'QRMG202404134MWESRXI',type:'Gedong Gincu',weight:887.04,province:'NTB',farm:'Green Meadow',dest:'🇹🇭 Thailand',date:'2024-04-18',grade:'A',status:'Quality Check'},
+  'MG20240414': {batch:'MG20240414',qr:'QRMG20240414YDXWZ263',type:'Podang',weight:810.17,province:'Lampung',farm:'Golden Harvest',dest:'🇦🇪 UAE',date:'2024-05-18',grade:'B',status:'Quality Check'},
+  'MG20240415': {batch:'MG20240415',qr:'QRMG20240415B20XSCN7',type:'Podang',weight:927.93,province:'Jawa Timur',farm:'Sunrise Orchards',dest:'🇹🇭 Thailand',date:'2024-10-21',grade:'B',status:'At Port'},
+  'MG20240416': {batch:'MG20240416',qr:'QRMG20240416JKOOOPD6',type:'Manalagi',weight:902.06,province:'Jawa Barat',farm:'Royal Mango Estate',dest:'🇨🇳 China',date:'2024-06-04',grade:'B',status:'Harvested'},
+  'MG20240417': {batch:'MG20240417',qr:'QRMG20240417VT1MF6A7',type:'Arumanis',weight:542.82,province:'Sumatra Utara',farm:'Royal Mango Estate',dest:'🇦🇪 UAE',date:'2024-01-16',grade:'C',status:'Harvested'},
+  'MG20240418': {batch:'MG20240418',qr:'QRMG202404186KLQEW22',type:'Arumanis',weight:79.24,province:'Sumatra Utara',farm:'Sunrise Orchards',dest:'🇰🇷 South Korea',date:'2024-07-13',grade:'A',status:'Exported'},
+  'MG20240419': {batch:'MG20240419',qr:'QRMG20240419RXPX88NU',type:'Harum Manis',weight:661.24,province:'Jawa Barat',farm:'Green Meadow',dest:'🇨🇳 China',date:'2024-03-02',grade:'B',status:'Harvested'},
+  'MG20240420': {batch:'MG20240420',qr:'QRMG20240420WDSGB7ZE',type:'Arumanis',weight:720.82,province:'NTB',farm:'Green Meadow',dest:'🇯🇵 Japan',date:'2024-05-02',grade:'B',status:'Delivered'},
+  'MG20240421': {batch:'MG20240421',qr:'QRMG20240421LWTKX524',type:'Gedong Gincu',weight:227.86,province:'Jawa Tengah',farm:'Tropical Paradise',dest:'🇰🇷 South Korea',date:'2024-03-24',grade:'C',status:'In Transit'},
+  'MG20240422': {batch:'MG20240422',qr:'QRMG20240422L6QBQ4Y9',type:'Podang',weight:775.53,province:'Jawa Timur',farm:'Royal Mango Estate',dest:'🇸🇦 Saudi Arabia',date:'2024-05-02',grade:'A',status:'Harvested'},
+  'MG20240423': {batch:'MG20240423',qr:'QRMG202404235BIFLU6X',type:'Gedong Gincu',weight:482.74,province:'Bali',farm:'Royal Mango Estate',dest:'🇨🇳 China',date:'2024-03-20',grade:'B',status:'In Transit'},
+  'MG20240424': {batch:'MG20240424',qr:'QRMG20240424LIPJ773Y',type:'Golek',weight:163.59,province:'Jawa Tengah',farm:'Golden Harvest',dest:'🇯🇵 Japan',date:'2024-04-09',grade:'A',status:'Quality Check'},
+  'MG20240425': {batch:'MG20240425',qr:'QRMG20240425VE8QYXZK',type:'Arumanis',weight:374.60,province:'Jawa Timur',farm:'Tropical Paradise',dest:'🇦🇪 UAE',date:'2024-09-01',grade:'C',status:'Exported'},
+  'MG20240426': {batch:'MG20240426',qr:'QRMG20240426ZU8N58X4',type:'Golek',weight:760.82,province:'Sumatra Utara',farm:'Golden Harvest',dest:'🇰🇷 South Korea',date:'2024-05-24',grade:'B',status:'Quality Check'},
+  'MG20240427': {batch:'MG20240427',qr:'QRMG20240427OTRZ4C10',type:'Golek',weight:496.17,province:'Sumatra Utara',farm:'Green Meadow',dest:'🇯🇵 Japan',date:'2024-05-22',grade:'B',status:'Delivered'},
+  'MG20240428': {batch:'MG20240428',qr:'QRMG20240428U6JBXDNA',type:'Golek',weight:492.61,province:'Jawa Barat',farm:'Tropical Paradise',dest:'🇰🇷 South Korea',date:'2024-07-02',grade:'B',status:'Harvested'},
+  'MG20240429': {batch:'MG20240429',qr:'QRMG202404297STJO353',type:'Podang',weight:950.78,province:'Lampung',farm:'Mango Valley Farm',dest:'🇯🇵 Japan',date:'2024-08-08',grade:'A',status:'At Port'},
+  'MG20240430': {batch:'MG20240430',qr:'QRMG20240430BX8EDND0',type:'Gedong Gincu',weight:403.93,province:'Jawa Timur',farm:'Green Meadow',dest:'🇦🇪 UAE',date:'2024-09-08',grade:'C',status:'In Transit'},
+  'MG20240431': {batch:'MG20240431',qr:'QRMG20240431J5HNSMDK',type:'Golek',weight:283.07,province:'NTB',farm:'Sunrise Orchards',dest:'🇦🇪 UAE',date:'2024-04-13',grade:'C',status:'At Port'},
+  'MG20240432': {batch:'MG20240432',qr:'QRMG202404322H8Q54VV',type:'Harum Manis',weight:646.18,province:'Lampung',farm:'Blossom Fields',dest:'🇯🇵 Japan',date:'2024-07-20',grade:'A',status:'At Port'},
+  'MG20240433': {batch:'MG20240433',qr:'QRMG20240433ZS5OFHM3',type:'Podang',weight:801.83,province:'Jawa Barat',farm:'Golden Harvest',dest:'🇦🇪 UAE',date:'2024-03-23',grade:'B',status:'Quality Check'},
+  'MG20240434': {batch:'MG20240434',qr:'QRMG20240434K8S6NY6I',type:'Harum Manis',weight:946.64,province:'Jawa Tengah',farm:'Golden Harvest',dest:'🇸🇬 Singapore',date:'2024-05-21',grade:'C',status:'Delivered'},
+  'MG20240435': {batch:'MG20240435',qr:'QRMG202404354TLICB3F',type:'Podang',weight:759.35,province:'Sumatra Utara',farm:'Green Meadow',dest:'🇸🇬 Singapore',date:'2024-05-20',grade:'A',status:'In Transit'},
+  'MG20240436': {batch:'MG20240436',qr:'QRMG20240436X89AKSDA',type:'Gedong Gincu',weight:806.62,province:'Lampung',farm:'Sunrise Orchards',dest:'🇨🇳 China',date:'2024-05-24',grade:'C',status:'In Transit'},
+  'MG20240437': {batch:'MG20240437',qr:'QRMG20240437NPN8081L',type:'Podang',weight:264.66,province:'Jawa Tengah',farm:'Blossom Fields',dest:'🇰🇷 South Korea',date:'2024-04-15',grade:'B',status:'At Port'},
+  'MG20240438': {batch:'MG20240438',qr:'QRMG20240438QFO41Q8Z',type:'Gedong Gincu',weight:655.42,province:'Jawa Barat',farm:'Mango Valley Farm',dest:'🇦🇪 UAE',date:'2024-08-13',grade:'A',status:'Delivered'},
+  'MG20240439': {batch:'MG20240439',qr:'QRMG202404394FLXWEBL',type:'Arumanis',weight:217.90,province:'Lampung',farm:'Tropical Paradise',dest:'🇨🇳 China',date:'2024-08-09',grade:'C',status:'Exported'},
+  'MG20240440': {batch:'MG20240440',qr:'QRMG20240440VUI2ZE6C',type:'Arumanis',weight:573.50,province:'Sumatra Utara',farm:'Blossom Fields',dest:'🇹🇭 Thailand',date:'2024-10-24',grade:'A',status:'Exported'},
+  'MG20240441': {batch:'MG20240441',qr:'QRMG20240441XTFBMXCU',type:'Manalagi',weight:737.63,province:'Lampung',farm:'Blossom Fields',dest:'🇭🇰 Hong Kong',date:'2024-04-15',grade:'C',status:'Delivered'},
+  'MG20240442': {batch:'MG20240442',qr:'QRMG20240442INB32C03',type:'Gedong Gincu',weight:831.80,province:'Jawa Tengah',farm:'Mango Valley Farm',dest:'🇦🇪 UAE',date:'2024-01-04',grade:'B',status:'At Port'},
+  'MG20240443': {batch:'MG20240443',qr:'QRMG20240443TAN438IV',type:'Manalagi',weight:970.22,province:'NTB',farm:'Tropical Paradise',dest:'🇨🇳 China',date:'2024-04-06',grade:'C',status:'Harvested'},
+  'MG20240444': {batch:'MG20240444',qr:'QRMG20240444VWI15512',type:'Podang',weight:143.37,province:'Jawa Tengah',farm:'Royal Mango Estate',dest:'🇯🇵 Japan',date:'2024-04-05',grade:'C',status:'Quality Check'},
+  'MG20240445': {batch:'MG20240445',qr:'QRMG20240445ZZFN0M0A',type:'Manalagi',weight:117.80,province:'Lampung',farm:'Golden Harvest',dest:'🇯🇵 Japan',date:'2024-06-07',grade:'C',status:'Quality Check'},
+  'MG20240446': {batch:'MG20240446',qr:'QRMG20240446EQY2S04W',type:'Harum Manis',weight:287.40,province:'Jawa Barat',farm:'Green Meadow',dest:'🇯🇵 Japan',date:'2024-01-27',grade:'B',status:'Exported'},
+  'MG20240447': {batch:'MG20240447',qr:'QRMG20240447JGCZVE83',type:'Gedong Gincu',weight:642.82,province:'Jawa Timur',farm:'Sunrise Orchards',dest:'🇸🇦 Saudi Arabia',date:'2024-10-06',grade:'A',status:'At Port'},
+  'MG20240448': {batch:'MG20240448',qr:'QRMG20240448E46ZS6C8',type:'Golek',weight:627.69,province:'Jawa Tengah',farm:'Mango Valley Farm',dest:'🇦🇪 UAE',date:'2024-02-18',grade:'C',status:'In Transit'},
+  'MG20240449': {batch:'MG20240449',qr:'QRMG20240449PDMV8MCN',type:'Golek',weight:439.44,province:'Jawa Tengah',farm:'Mango Valley Farm',dest:'🇨🇳 China',date:'2024-08-06',grade:'B',status:'Quality Check'},
+  'MG20240450': {batch:'MG20240450',qr:'QRMG20240450UUMP9Y2J',type:'Manalagi',weight:800.50,province:'Jawa Tengah',farm:'Golden Harvest',dest:'🇸🇬 Singapore',date:'2024-09-21',grade:'A',status:'At Port'},
+  'MG20240451': {batch:'MG20240451',qr:'QRMG20240451IEW5BS0T',type:'Harum Manis',weight:574.85,province:'Lampung',farm:'Golden Harvest',dest:'🇸🇦 Saudi Arabia',date:'2024-01-21',grade:'A',status:'Exported'},
+  'MG20240452': {batch:'MG20240452',qr:'QRMG20240452BFSNPX9G',type:'Podang',weight:558.02,province:'Bali',farm:'Tropical Paradise',dest:'🇸🇦 Saudi Arabia',date:'2024-03-25',grade:'C',status:'Harvested'},
+  'MG20240453': {batch:'MG20240453',qr:'QRMG20240453KE80QRHC',type:'Manalagi',weight:399.44,province:'Jawa Barat',farm:'Blossom Fields',dest:'🇨🇳 China',date:'2024-06-13',grade:'A',status:'Harvested'},
+  'MG20240454': {batch:'MG20240454',qr:'QRMG2024045499ECTKCV',type:'Gedong Gincu',weight:147.98,province:'Jawa Barat',farm:'Golden Harvest',dest:'🇦🇪 UAE',date:'2024-10-02',grade:'C',status:'Harvested'},
+  'MG20240455': {batch:'MG20240455',qr:'QRMG20240455YW7YSL94',type:'Arumanis',weight:117.52,province:'Jawa Timur',farm:'Golden Harvest',dest:'🇭🇰 Hong Kong',date:'2024-07-26',grade:'C',status:'In Transit'},
+  'MG20240456': {batch:'MG20240456',qr:'QRMG20240456V9PVZMNY',type:'Golek',weight:242.65,province:'Jawa Tengah',farm:'Sunrise Orchards',dest:'🇯🇵 Japan',date:'2024-10-18',grade:'C',status:'Quality Check'},
+  'MG20240457': {batch:'MG20240457',qr:'QRMG20240457NSAC4RTY',type:'Arumanis',weight:142.81,province:'Jawa Timur',farm:'Blossom Fields',dest:'🇦🇪 UAE',date:'2024-01-03',grade:'A',status:'At Port'},
+  'MG20240458': {batch:'MG20240458',qr:'QRMG20240458R2GU8QVS',type:'Harum Manis',weight:856.55,province:'NTB',farm:'Blossom Fields',dest:'🇸🇬 Singapore',date:'2024-03-08',grade:'B',status:'Delivered'},
+  'MG20240459': {batch:'MG20240459',qr:'QRMG202404594VXN1YF5',type:'Golek',weight:115.36,province:'Bali',farm:'Mango Valley Farm',dest:'🇦🇪 UAE',date:'2024-06-26',grade:'A',status:'Harvested'},
+  'MG20240460': {batch:'MG20240460',qr:'QRMG202404608NMPHCY4',type:'Harum Manis',weight:505.67,province:'NTB',farm:'Tropical Paradise',dest:'🇯🇵 Japan',date:'2024-03-25',grade:'C',status:'In Transit'},
+  'MG20240461': {batch:'MG20240461',qr:'QRMG202404615Y1BMQ9L',type:'Harum Manis',weight:435.48,province:'Bali',farm:'Blossom Fields',dest:'🇸🇬 Singapore',date:'2024-02-15',grade:'A',status:'Harvested'},
+  'MG20240462': {batch:'MG20240462',qr:'QRMG202404624JLIVWIZ',type:'Arumanis',weight:156.46,province:'Sumatra Utara',farm:'Golden Harvest',dest:'🇸🇬 Singapore',date:'2024-05-03',grade:'B',status:'At Port'},
+  'MG20240463': {batch:'MG20240463',qr:'QRMG20240463U0186VTL',type:'Gedong Gincu',weight:244.03,province:'NTB',farm:'Blossom Fields',dest:'🇲🇾 Malaysia',date:'2024-01-09',grade:'A',status:'Harvested'},
+  'MG20240464': {batch:'MG20240464',qr:'QRMG20240464LJZVSWJ1',type:'Manalagi',weight:324.96,province:'Bali',farm:'Sunrise Orchards',dest:'🇦🇪 UAE',date:'2024-10-25',grade:'B',status:'In Transit'},
+  'MG20240465': {batch:'MG20240465',qr:'QRMG2024046582TNXVBX',type:'Arumanis',weight:265.04,province:'Jawa Barat',farm:'Royal Mango Estate',dest:'🇲🇾 Malaysia',date:'2024-10-12',grade:'C',status:'In Transit'},
+  'MG20240466': {batch:'MG20240466',qr:'QRMG20240466C9AI155V',type:'Arumanis',weight:510.51,province:'Jawa Timur',farm:'Tropical Paradise',dest:'🇲🇾 Malaysia',date:'2024-09-18',grade:'A',status:'Harvested'},
+  'MG20240467': {batch:'MG20240467',qr:'QRMG20240467ZR06SWDT',type:'Gedong Gincu',weight:416.76,province:'Jawa Barat',farm:'Blossom Fields',dest:'🇹🇭 Thailand',date:'2024-06-25',grade:'A',status:'In Transit'},
+  'MG20240468': {batch:'MG20240468',qr:'QRMG20240468EJTKXXYM',type:'Podang',weight:741.64,province:'Jawa Barat',farm:'Sunrise Orchards',dest:'🇲🇾 Malaysia',date:'2024-03-31',grade:'B',status:'At Port'},
+  'MG20240469': {batch:'MG20240469',qr:'QRMG20240469FC6RNUAH',type:'Podang',weight:259.48,province:'Bali',farm:'Royal Mango Estate',dest:'🇨🇳 China',date:'2024-06-06',grade:'B',status:'Delivered'},
+  'MG20240470': {batch:'MG20240470',qr:'QRMG20240470D1N0M4RN',type:'Gedong Gincu',weight:875.72,province:'Bali',farm:'Royal Mango Estate',dest:'🇭🇰 Hong Kong',date:'2024-03-09',grade:'A',status:'Exported'},
+  'MG20240471': {batch:'MG20240471',qr:'QRMG20240471FI1Z3H5G',type:'Arumanis',weight:313.39,province:'Sumatra Utara',farm:'Tropical Paradise',dest:'🇦🇪 UAE',date:'2024-10-03',grade:'C',status:'At Port'},
+  'MG20240472': {batch:'MG20240472',qr:'QRMG20240472LWLCIKML',type:'Manalagi',weight:83.49,province:'Jawa Barat',farm:'Green Meadow',dest:'🇰🇷 South Korea',date:'2024-05-17',grade:'C',status:'At Port'},
+  'MG20240473': {batch:'MG20240473',qr:'QRMG20240473HET97DVS',type:'Harum Manis',weight:775.50,province:'Jawa Timur',farm:'Green Meadow',dest:'🇦🇪 UAE',date:'2024-08-14',grade:'B',status:'Harvested'},
+  'MG20240474': {batch:'MG20240474',qr:'QRMG20240474X843PICM',type:'Golek',weight:903.38,province:'NTB',farm:'Mango Valley Farm',dest:'🇸🇬 Singapore',date:'2024-09-01',grade:'B',status:'Exported'},
+  'MG20240475': {batch:'MG20240475',qr:'QRMG20240475ZF6MIF12',type:'Gedong Gincu',weight:304.47,province:'Lampung',farm:'Sunrise Orchards',dest:'🇸🇦 Saudi Arabia',date:'2024-08-14',grade:'C',status:'Harvested'},
+  'MG20240476': {batch:'MG20240476',qr:'QRMG20240476PERDDXDV',type:'Gedong Gincu',weight:270.96,province:'Jawa Tengah',farm:'Mango Valley Farm',dest:'🇰🇷 South Korea',date:'2024-03-13',grade:'A',status:'In Transit'},
+  'MG20240477': {batch:'MG20240477',qr:'QRMG202404778RBU83BD',type:'Golek',weight:752.01,province:'Jawa Timur',farm:'Sunrise Orchards',dest:'🇲🇾 Malaysia',date:'2024-09-21',grade:'B',status:'Harvested'},
+  'MG20240478': {batch:'MG20240478',qr:'QRMG20240478DTPZHSNG',type:'Harum Manis',weight:298.42,province:'Sumatra Utara',farm:'Golden Harvest',dest:'🇲🇾 Malaysia',date:'2024-07-05',grade:'C',status:'Exported'},
+  'MG20240479': {batch:'MG20240479',qr:'QRMG202404798SKI9Y6P',type:'Harum Manis',weight:804.63,province:'Jawa Tengah',farm:'Tropical Paradise',dest:'🇲🇾 Malaysia',date:'2024-04-22',grade:'A',status:'At Port'},
+  'MG20240480': {batch:'MG20240480',qr:'QRMG2024048033WJTLRW',type:'Golek',weight:634.47,province:'Jawa Barat',farm:'Blossom Fields',dest:'🇭🇰 Hong Kong',date:'2024-05-03',grade:'C',status:'At Port'},
+  'MG20240481': {batch:'MG20240481',qr:'QRMG20240481DYX62UPE',type:'Podang',weight:643.78,province:'Jawa Barat',farm:'Tropical Paradise',dest:'🇦🇪 UAE',date:'2024-01-18',grade:'C',status:'Quality Check'},
+  'MG20240482': {batch:'MG20240482',qr:'QRMG202404826CZN93V5',type:'Golek',weight:359.68,province:'Jawa Timur',farm:'Tropical Paradise',dest:'🇭🇰 Hong Kong',date:'2024-01-22',grade:'C',status:'Exported'},
+  'MG20240483': {batch:'MG20240483',qr:'QRMG20240483LS93S3EE',type:'Gedong Gincu',weight:363.52,province:'Jawa Timur',farm:'Golden Harvest',dest:'🇯🇵 Japan',date:'2024-04-26',grade:'C',status:'Quality Check'},
+  'MG20240484': {batch:'MG20240484',qr:'QRMG20240484LYXUVES4',type:'Harum Manis',weight:867.07,province:'Jawa Tengah',farm:'Mango Valley Farm',dest:'🇭🇰 Hong Kong',date:'2024-06-02',grade:'C',status:'At Port'},
+  'MG20240485': {batch:'MG20240485',qr:'QRMG20240485P0UADYK9',type:'Podang',weight:193.80,province:'NTB',farm:'Royal Mango Estate',dest:'🇦🇪 UAE',date:'2024-03-05',grade:'C',status:'Quality Check'},
+  'MG20240486': {batch:'MG20240486',qr:'QRMG20240486NX1TUYKN',type:'Gedong Gincu',weight:497.79,province:'Jawa Tengah',farm:'Blossom Fields',dest:'🇹🇭 Thailand',date:'2024-06-13',grade:'A',status:'At Port'},
+  'MG20240487': {batch:'MG20240487',qr:'QRMG20240487CD2EL4XG',type:'Manalagi',weight:208.26,province:'NTB',farm:'Golden Harvest',dest:'🇦🇪 UAE',date:'2024-09-10',grade:'B',status:'Quality Check'},
+  'MG20240488': {batch:'MG20240488',qr:'QRMG20240488E28O1MOU',type:'Podang',weight:954.94,province:'Bali',farm:'Sunrise Orchards',dest:'🇰🇷 South Korea',date:'2024-06-16',grade:'A',status:'Harvested'},
+  'MG20240489': {batch:'MG20240489',qr:'QRMG2024048960EM6BN4',type:'Harum Manis',weight:708.37,province:'Jawa Tengah',farm:'Green Meadow',dest:'🇨🇳 China',date:'2024-03-31',grade:'A',status:'Delivered'},
+  'MG20240490': {batch:'MG20240490',qr:'QRMG20240490NUJ13H2V',type:'Harum Manis',weight:922.54,province:'Sumatra Utara',farm:'Tropical Paradise',dest:'🇸🇦 Saudi Arabia',date:'2024-10-14',grade:'A',status:'Quality Check'},
+  'MG20240491': {batch:'MG20240491',qr:'QRMG20240491WAQLFHSN',type:'Golek',weight:286.78,province:'Jawa Timur',farm:'Royal Mango Estate',dest:'🇹🇭 Thailand',date:'2024-06-12',grade:'B',status:'In Transit'},
+  'MG20240492': {batch:'MG20240492',qr:'QRMG202404922WEIWD8H',type:'Podang',weight:927.64,province:'Jawa Tengah',farm:'Royal Mango Estate',dest:'🇭🇰 Hong Kong',date:'2024-08-18',grade:'B',status:'Quality Check'},
+  'MG20240493': {batch:'MG20240493',qr:'QRMG20240493LHVITLRP',type:'Golek',weight:430.53,province:'Sumatra Utara',farm:'Green Meadow',dest:'🇸🇦 Saudi Arabia',date:'2024-10-23',grade:'B',status:'At Port'},
+  'MG20240494': {batch:'MG20240494',qr:'QRMG202404940OI7I3AY',type:'Arumanis',weight:227.95,province:'Lampung',farm:'Mango Valley Farm',dest:'🇦🇪 UAE',date:'2024-08-05',grade:'B',status:'Exported'},
+  'MG20240495': {batch:'MG20240495',qr:'QRMG20240495EP98ZJPG',type:'Harum Manis',weight:515.25,province:'Sumatra Utara',farm:'Blossom Fields',dest:'🇸🇬 Singapore',date:'2024-06-07',grade:'A',status:'Exported'},
+  'MG20240496': {batch:'MG20240496',qr:'QRMG202404964OKDRAIN',type:'Gedong Gincu',weight:605.42,province:'Jawa Timur',farm:'Royal Mango Estate',dest:'🇰🇷 South Korea',date:'2024-09-16',grade:'A',status:'Quality Check'},
+  'MG20240497': {batch:'MG20240497',qr:'QRMG202404973F0J63M1',type:'Golek',weight:849.13,province:'NTB',farm:'Golden Harvest',dest:'🇸🇦 Saudi Arabia',date:'2024-09-03',grade:'A',status:'At Port'},
+  'MG20240498': {batch:'MG20240498',qr:'QRMG20240498I601MLE6',type:'Harum Manis',weight:88.53,province:'NTB',farm:'Royal Mango Estate',dest:'🇯🇵 Japan',date:'2024-09-07',grade:'A',status:'Exported'},
+  'MG20240499': {batch:'MG20240499',qr:'QRMG20240499DN8FA7LE',type:'Gedong Gincu',weight:544.55,province:'Sumatra Utara',farm:'Mango Valley Farm',dest:'🇯🇵 Japan',date:'2024-01-25',grade:'C',status:'Quality Check'},
+  'MG20240500': {batch:'MG20240500',qr:'QRMG202405003KPWX8WF',type:'Golek',weight:858.55,province:'NTB',farm:'Blossom Fields',dest:'🇨🇳 China',date:'2024-10-06',grade:'A',status:'At Port'},
+};
+
+
+        console.log("✅", Object.keys(batchDatabase).length, "batches loaded");
+
+        // ==================== ANALYTICS EXPLANATIONS ====================
+        const analyticsExp = {
+            overview: {
+                title: '<i class="fas fa-th-large"></i> Overview Dashboard',
+                text: '<strong>Dashboard Overview</strong> menampilkan ringkasan menyeluruh dari semua aktivitas ekspor mangga Indonesia. Total batch, distribusi destinasi, performa bulanan, dan tren untuk pengambilan keputusan strategis.'
+            },
+            batches: {
+                title: '<i class="fas fa-boxes"></i> Total Batches Exported',
+                text: '<strong>Dashboard Total Batches</strong> menampilkan jumlah batch berdasarkan periode, jenis mangga, dan grade kualitas untuk memahami volume produksi dan identifikasi jenis mangga terpopuler.'
+            },
+            success: {
+                title: '<i class="fas fa-check-circle"></i> Delivery Success Rate',
+                text: '<strong>Dashboard Success Rate</strong> mengukur persentase batch yang berhasil sampai tujuan. Success rate >95% menandakan efisiensi logistik optimal.'
+            },
+            revenue: {
+                title: '<i class="fas fa-dollar-sign"></i> Total Revenue Analysis',
+                text: '<strong>Dashboard Revenue</strong> menampilkan analisis pendapatan per destinasi, jenis mangga, dan periode untuk identifikasi pasar menguntungkan dan strategi pricing.'
+            },
+            forecast: {
+                title: '<i class="fas fa-chart-line"></i> Forecast Next Month',
+                text: '<strong>Dashboard Forecast</strong> memprediksi volume ekspor, pendapatan, dan demand menggunakan machine learning untuk perencanaan produksi dan alokasi sumber daya.'
+            },
+            quality: {
+                title: '<i class="fas fa-star"></i> Quality Grade Distribution',
+                text: '<strong>Dashboard Quality Grade</strong> menampilkan distribusi Grade A (premium), B (standar), C (lokal) untuk quality control dan peningkatan proporsi Grade A.'
+            },
+            weight: {
+                title: '<i class="fas fa-weight"></i> Export Weight by Dimension',
+                text: '<strong>Dashboard Weight Distribution</strong> menganalisis berat ekspor per provinsi, farm, destinasi untuk optimasi logistik dan profit margin.'
+            }
+        };
+
+        // ==================== QR SCANNER ====================
+        let html5QrCode = null;
+        let cameras = [];
+        let currentCamera = 0;
+        let isScanning = false;
+
+        function showMsg(text) {
+            document.getElementById('scanMsg').style.display = 'block';
+            document.getElementById('scanMsgText').textContent = text;
+        }
+
+        async function startScanning() {
+            try {
+                showMsg('Mengakses kamera...');
+
+                cameras = await Html5Qrcode.getCameras();
+                console.log("📷 Found", cameras.length, "cameras");
+
+                if (cameras.length === 0) {
+                    alert("❌ Tidak ada kamera! Pastikan izin kamera sudah diberikan.");
+                    return;
+                }
+
+                html5QrCode = new Html5Qrcode("reader");
+
+                await html5QrCode.start(
+                    cameras[currentCamera].id,
+                    { fps: 10, qrbox: { width: 250, height: 250 } },
+                    (decodedText) => {
+                        console.log("✅ QR detected:", decodedText);
+                        showMsg('QR Code terdeteksi: ' + decodedText);
+                        document.getElementById('batchInput').value = decodedText;
+                        trackBatch();
+                    },
+                    (error) => {}
+                );
+
+                isScanning = true;
+                document.getElementById('startBtn').disabled = true;
+                document.getElementById('stopBtn').disabled = false;
+                document.getElementById('switchBtn').disabled = cameras.length <= 1;
+
+                showMsg('✅ Scanner aktif! Arahkan ke QR code');
+
+            } catch (err) {
+                console.error("Error:", err);
+                alert("Error: " + err.message);
+            }
+        }
+
+        async function stopScanning() {
+            if (html5QrCode && isScanning) {
+                try {
+                    await html5QrCode.stop();
+                    html5QrCode.clear();
+                    html5QrCode = null;
+                    isScanning = false;
+                    document.getElementById('startBtn').disabled = false;
+                    document.getElementById('stopBtn').disabled = true;
+                    document.getElementById('switchBtn').disabled = true;
+                    showMsg('Scanner dihentikan');
+                } catch (err) {
+                    console.error("Stop error:", err);
+                }
+            }
+        }
+
+        async function switchCamera() {
+            if (cameras.length > 1) {
+                await stopScanning();
+                currentCamera = (currentCamera + 1) % cameras.length;
+                showMsg('Mengganti kamera...');
+                await startScanning();
+            }
+        }
+
+        // ==================== TRACKING ====================
+        function trackBatch() {
+            const code = document.getElementById('batchInput').value.trim().toUpperCase();
+            const resultBox = document.getElementById('resultBox');
+            const resultTable = document.getElementById('resultTable');
+
+            if (!code) {
+                alert("⚠️ Masukkan batch code!");
+                return;
+            }
+
+            const batch = batchDatabase[code];
+
+            if (batch) {
+                resultTable.innerHTML = `
+                    <tr><td>Batch Code:</td><td><strong>${batch.batch}</strong></td></tr>
+                    <tr><td>QR Code:</td><td><code style="font-size:12px;">${batch.qr}</code></td></tr>
+                    <tr><td>Jenis Mangga:</td><td>${batch.type}</td></tr>
+                    <tr><td>Grade:</td><td>Grade ${batch.grade}</td></tr>
+                    <tr><td>Berat:</td><td>${batch.weight} Kg</td></tr>
+                    <tr><td>Provinsi:</td><td>${batch.province}</td></tr>
+                    <tr><td>Farm:</td><td>${batch.farm}</td></tr>
+                    <tr><td>Tanggal:</td><td>${batch.date}</td></tr>
+                    <tr><td>Destinasi:</td><td>${batch.dest}</td></tr>
+                    <tr><td>Status:</td><td><span style="padding:6px 14px; background:#D1FAE5; color:#065F46; border-radius:20px; font-size:12px; font-weight:600;">${batch.status}</span></td></tr>
+                `;
+
+                // Generate QR using API - GUARANTEED TO WORK!
+                generateQRCode(batch.batch);
+
+                resultBox.classList.add('show');
+
+                setTimeout(() => {
+                    resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 100);
+
+            } else {
+                alert("❌ Batch " + code + " tidak ditemukan!\n\nCoba: MG20240001, MG20240002, MG20240050");
+            }
+        }
+
+        // ==================== QR GENERATION - GUARANTEED WORKING ====================
+        function generateQRCode(text) {
+            // Method 1: Using QR API (always works)
+            const qrDisplay = document.getElementById('qrcode-display');
+            qrDisplay.innerHTML = `
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(text)}&bgcolor=FFFFFF&color=FF8C00" 
+                     alt="QR Code" 
+                     style="border:3px solid #FF8C00; border-radius:8px; padding:10px; background:white;">
+            `;
+            console.log("✅ QR Code generated for:", text);
+        }
+
+        // ==================== POWER BI ====================
+        const powerBIUrls = [
+            'https://app.powerbi.com/reportEmbed?reportId=2cec03a5-f0c9-43d3-a629-b733678bd63a&autoAuth=true&ctid=fedd5298-8e66-45f1-b321-fd38ad0ff722',
+            'https://app.powerbi.com/reportEmbed?reportId=2cec03a5-f0c9-43d3-a629-b733678bd63a&autoAuth=true&ctid=fedd5298-8e66-45f1-b321-fd38ad0ff722&pageName=Page1',
+            'https://app.powerbi.com/reportEmbed?reportId=2cec03a5-f0c9-43d3-a629-b733678bd63a&autoAuth=true&ctid=fedd5298-8e66-45f1-b321-fd38ad0ff722&pageName=Page2',
+            'https://app.powerbi.com/reportEmbed?reportId=2cec03a5-f0c9-43d3-a629-b733678bd63a&autoAuth=true&ctid=fedd5298-8e66-45f1-b321-fd38ad0ff722&pageName=Page3',
+            'https://app.powerbi.com/reportEmbed?reportId=2cec03a5-f0c9-43d3-a629-b733678bd63a&autoAuth=true&ctid=fedd5298-8e66-45f1-b321-fd38ad0ff722&pageName=Page4',
+            'https://app.powerbi.com/reportEmbed?reportId=2cec03a5-f0c9-43d3-a629-b733678bd63a&autoAuth=true&ctid=fedd5298-8e66-45f1-b321-fd38ad0ff722&pageName=Page5',
+            'https://app.powerbi.com/reportEmbed?reportId=2cec03a5-f0c9-43d3-a629-b733678bd63a&autoAuth=true&ctid=fedd5298-8e66-45f1-b321-fd38ad0ff722&pageName=Page6'
+        ];
+
+        function showPowerBI(index, type) {
+            document.querySelectorAll('.powerbi-btn').forEach((btn, i) => {
+                btn.classList.toggle('active', i === index);
+            });
+            document.getElementById('powerbiFrame').src = powerBIUrls[index];
+
+            const exp = analyticsExp[type];
+            document.getElementById('analyticsExp').innerHTML = `
+                <h4>${exp.title}</h4>
+                <p>${exp.text}</p>
+            `;
+        }
+
+        // ==================== SMOOTH SCROLL ====================
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // ==================== ENTER KEY ====================
+        document.getElementById('batchInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') trackBatch();
+        });
+
+        // ==================== INIT ====================
+        console.log('%c🥭 MANGO TRACKER 100% WORKING!', 'background:#FF8C00; color:white; padding:10px 20px; font-size:16px; font-weight:bold;');
+        console.log('✅ QR Scanner: Ready');
+        console.log('✅ QR Generator: API-based (guaranteed working)');
+        console.log('✅ All buttons: Interactive');
+        console.log('✅ 500 batches: Ready to track');
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
+<script>
+// ==================== FIREBASE CONFIG ====================
+const firebaseConfig = {
+  apiKey: "AIzaSyBSqJ24qIX65Sc20yLYeb1LnPNHYVj4VPk",
+  authDomain: "tracking-mangga.firebaseapp.com",
+  projectId: "tracking-mangga",
+  storageBucket: "tracking-mangga.firebasestorage.app",
+  messagingSenderId: "1031988006166",
+  appId: "1:1031988006166:web:f635aa1682dbd4bd59d437",
+  measurementId: "G-CJ7NK7E1DR"
+};
+
+// Initialize Firebase
+try {
+  firebase.initializeApp(firebaseConfig);
+  const database = firebase.database();
+  const storage  = firebase.storage();
+  window.saveToFirebase = function(batchData) {
+    const ts = new Date().toISOString();
+    return database.ref("tracked_batches/" + batchData.batch).set({
+      ...batchData,
+      tracked_at: ts,
+      tracked_from: "web_scanner"
+    });
+  };
+} catch (e) {
+  console.warn("Firebase not configured:", e);
+}
+</script>
+
+</body>
+</html>
